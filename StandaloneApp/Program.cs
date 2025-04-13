@@ -1,10 +1,17 @@
-# https://learn.microsoft.com/windows-hardware/design/component-guidelines/touchpad-tuning-guidelines?WT.mc_id=DOP-MVP-5001655#dynamically-querying-and-modifying-settings
-
-$source=@'
-using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+
+namespace StandaloneApp;
+
+// No source generators or package references, so we can copy this code and use it in PowerShell
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        SystemParametersInfoHelper.DisableSingleTap();
+    }
+}
 
 public static class SystemParametersInfoHelper
 {
@@ -34,6 +41,10 @@ public static class SystemParametersInfoHelper
                 param.TapEnabled = false;
 
                 result = SystemParametersInfo(SPI_SETTOUCHPADPARAMETERS, size, &param, 3);
+
+                Console.WriteLine(result);
+
+                Console.WriteLine(Marshal.GetLastWin32Error());
             }
         }
     }
@@ -274,7 +285,3 @@ public enum TOUCHPAD_SENSITIVITY_LEVEL : uint
     TOUCHPAD_SENSITIVITY_LEVEL_LOW_SENSITIVITY = 0x00000003,
     TOUCHPAD_SENSITIVITY_LEVEL_LEAST_SENSITIVE = 0x00000004
 }
-'@
-
-Add-Type -TypeDefinition $source -Language CSharp -PassThru -CompilerOptions "/unsafe" | Out-Null
-[SystemParametersInfoHelper]::DisableSingleTap()
