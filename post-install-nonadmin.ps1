@@ -12,6 +12,10 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-cred
 # Create Firefox profile (so we can then set prefs)
 & 'C:\Program Files\Mozilla Firefox\firefox.exe' --headless --screenshot nul
 
+$firefoxProfile = Get-ChildItem "$env:APPDATA\Mozilla\Firefox\Profiles" | Where-Object { $_.Name -match "default-release" } | Select-Object -First 1
+
+# TODO confirm this is the right place to copy prefs.js to
+
 # Git configuration
 
 git config --global core.editor "code --wait"
@@ -20,3 +24,6 @@ git config --global push.autoSetupRemote true
 git config --global user.email "david@gardiner.net.au"
 git config --global user.name "David Gardiner"
 git config --global init.defaultbranch "main"
+
+# Enable Clipboard History
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
