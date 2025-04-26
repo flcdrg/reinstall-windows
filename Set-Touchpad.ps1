@@ -1,6 +1,8 @@
 # https://learn.microsoft.com/windows-hardware/design/component-guidelines/touchpad-tuning-guidelines?WT.mc_id=DOP-MVP-5001655#dynamically-querying-and-modifying-settings
 
-$source=@'
+#require -Version 5.1
+
+$source = @'
 using System;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
@@ -276,5 +278,14 @@ public enum TOUCHPAD_SENSITIVITY_LEVEL : uint
 }
 '@
 
-Add-Type -TypeDefinition $source -Language CSharp -PassThru -CompilerOptions "/unsafe" | Out-Null
+if ($PSVersionTable.PSVersion.Major -eq 5) {
+    ($cp = New-Object System.CodeDom.Compiler.CompilerParameters).CompilerOptions = '/unsafe'
+
+    Add-Type -CompilerParameters $cp -TypeDefinition $source -Language CSharp
+}
+elseif ($PSVersionTable.PSVersion.Major -eq 7) {
+    Add-Type -CompilerOptions '/unsafe' $cp -TypeDefinition $source -Language CSharp
+}
+
+
 [SystemParametersInfoHelper]::DisableSingleTap()

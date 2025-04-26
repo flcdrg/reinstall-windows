@@ -2,6 +2,11 @@
 
 Many of these scripts were originally located in <https://gist.github.com/flcdrg>. Newer versions will live here so they can be better version controlled.
 
+## Manual steps
+
+1. Deactivate any licensed software that is linked to the machine (eg. Red Gate)
+2. Shutdown any VMs
+
 ## Scripts relating to installing/reinstalling Windows
 
 - [post-install.ps1](post-install.ps1) - Things to run after Windows installation (run with elevated permissions)
