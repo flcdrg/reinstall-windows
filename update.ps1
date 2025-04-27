@@ -11,45 +11,49 @@ Write-Output "$(Get-TS): Starting media refresh"
 # checkpoint cumulative updates.
 $LCU_PATH = "C:\mediaRefresh\packages\CU\"
 
+$LCU_SERVICE_STACK = $LCU_PATH + "windows11.0-kb5043080-x64_953449672073f8fb99badb4cc6d5d7849b9c83e8.msu"
+$LCU_CU_PATH = $LCU_PATH + "windows11.0-kb5055523-x64_b1df8c7b11308991a9c45ae3fba6caa0e2996157.msu"
+
 $SETUP_DU_PATH = "C:\mediaRefresh\packages\Other\SetupDynamic\windows11.0-kb5055643-x64_11bedc2e384c9f4f8db1ef551e438e4dce181202.cab"
 $SAFE_OS_DU_PATH = "C:\mediaRefresh\packages\Other\SafeOSDynamic\windows11.0-kb5057781-x64_0c527ae1d79c06327de2eff7779aa430181eee9b.cab"
 $DOTNET_CU_PATH = "C:\mediaRefresh\packages\Other\windows11.0-kb5054979-x64-ndp481_8e2f730bc747de0f90aaee95d4862e4f88751c07.msu"
 
 # Declare media for FOD and LPs
-$FOD_ISO_PATH = "C:\mediaRefresh\packages\mul_languages_and_optional_features_for_windows_11_version_24h2_x64_dvd_eb44bee0.iso"
+#$FOD_ISO_PATH = "C:\mediaRefresh\packages\mul_languages_and_optional_features_for_windows_11_version_24h2_x64_dvd_eb44bee0.iso"
 
 # Array of Features On Demand for main OS
 # This is optional to showcase where these are added
-$FOD = @(
-    #'XPS.Viewer~~~~0.0.1.0'
-)
+# $FOD = @(
+#     #'XPS.Viewer~~~~0.0.1.0'
+# )
 
 # Array of Legacy Features for main OS
 # This is optional to showcase where these are added
 $OC = @(
-    'Client-ProjFS'
-    'Telnet'
+    'Client-ProjFS',
+    'TelnetClient',
+    'VirtualMachinePlatform',
     'Microsoft-Windows-Subsystem-Linux'
 )
 
 # Mount the Features on Demand ISO
-Write-Output "$(Get-TS): Mounting FOD ISO"
-$FOD_ISO_DRIVE_LETTER = (Mount-DiskImage -ImagePath $FOD_ISO_PATH -ErrorAction stop | Get-Volume).DriveLetter
-$FOD_PATH = $FOD_ISO_DRIVE_LETTER + ":\LanguagesAndOptionalFeatures"
+# Write-Output "$(Get-TS): Mounting FOD ISO"
+# $FOD_ISO_DRIVE_LETTER = (Mount-DiskImage -ImagePath $FOD_ISO_PATH -ErrorAction stop | Get-Volume).DriveLetter
+# $FOD_PATH = $FOD_ISO_DRIVE_LETTER + ":\LanguagesAndOptionalFeatures"
 
 # Declare language for showcasing adding optional localized components
-$LANG = ""
+# $LANG = ""
 # $LANG_FONT_CAPABILITY = "jpan"
 
 # Declare language related cabs
-$WINPE_OC_PATH = "$FOD_ISO_DRIVE_LETTER`:\Windows Preinstallation Environment\x64\WinPE_OCs"
-$WINPE_OC_LANG_PATH = "$WINPE_OC_PATH\$LANG"
-$WINPE_OC_LANG_CABS = Get-ChildItem $WINPE_OC_LANG_PATH -Name
-$WINPE_OC_LP_PATH = "$WINPE_OC_LANG_PATH\lp.cab"
-$WINPE_FONT_SUPPORT_PATH = "$WINPE_OC_PATH\WinPE-FontSupport-$LANG.cab"
-$WINPE_SPEECH_TTS_PATH = "$WINPE_OC_PATH\WinPE-Speech-TTS.cab"
-$WINPE_SPEECH_TTS_LANG_PATH = "$WINPE_OC_PATH\WinPE-Speech-TTS-$LANG.cab"
-$OS_LP_PATH = "$FOD_PATH\Microsoft-Windows-Client-Language-Pack_x64_$LANG.cab"
+#$WINPE_OC_PATH = "$FOD_ISO_DRIVE_LETTER`:\Windows Preinstallation Environment\x64\WinPE_OCs"
+#$WINPE_OC_LANG_PATH = "$WINPE_OC_PATH\$LANG"
+#$WINPE_OC_LANG_CABS = Get-ChildItem $WINPE_OC_LANG_PATH -Name
+#$WINPE_OC_LP_PATH = "$WINPE_OC_LANG_PATH\lp.cab"
+#$WINPE_FONT_SUPPORT_PATH = "$WINPE_OC_PATH\WinPE-FontSupport-$LANG.cab"
+#$WINPE_SPEECH_TTS_PATH = "$WINPE_OC_PATH\WinPE-Speech-TTS.cab"
+#$WINPE_SPEECH_TTS_LANG_PATH = "$WINPE_OC_PATH\WinPE-Speech-TTS-$LANG.cab"
+#$OS_LP_PATH = "$FOD_PATH\Microsoft-Windows-Client-Language-Pack_x64_$LANG.cab"
 
 # Declare folders for mounted images and temp files
 $MEDIA_OLD_PATH = "C:\mediaRefresh\oldMedia\Ge\client_professional_en-us"
@@ -60,7 +64,10 @@ $WINRE_MOUNT = "C:\mediaRefresh\temp\WinREMount"
 $WINPE_MOUNT = "C:\mediaRefresh\temp\WinPEMount"
 
 # Remove old temp directories
-Remove-Item -Path $WORKING_PATH -Recurse -Force
+if (Test-Path -Path $WORKING_PATH) {
+    Write-Output "$(Get-TS): Removing old working path $WORKING_PATH"
+    Remove-Item -Path $WORKING_PATH -Recurse -Force
+}
 
 # Create folders for mounting images and storing temporary files
 New-Item -ItemType directory -Path $WORKING_PATH -ErrorAction Stop 
@@ -88,13 +95,15 @@ try {
     $WINOS_IMAGES = Get-WindowsImage -ImagePath $MEDIA_NEW_PATH"\sources\install.wim"
 
     # Just do 1st and 6th image (Home and Pro)
-    Foreach ($IMAGE in $WINOS_IMAGES[0,5]) {
+    #Foreach ($IMAGE in $WINOS_IMAGES[0, 5]) {
+    $selectedImages = @($WINOS_IMAGES[5])
+    Foreach ($IMAGE in $selectedImages) {
 
         # first mount the main OS image
         Write-Output "$(Get-TS): Mounting main OS, image index $($IMAGE.ImageIndex)"
         Mount-WindowsImage -ImagePath $MEDIA_NEW_PATH"\sources\install.wim" -Index $IMAGE.ImageIndex -Path $MAIN_OS_MOUNT -ErrorAction stop -Verbose -LogLevel WarningsInfo
 
-        if ($IMAGE.ImageIndex -eq "1") {
+        if ($IMAGE.ImageIndex -eq "1" -or $selectedImages.Count -eq 1) {
 
             #
             # update Windows Recovery Environment (WinRE) within this OS image
@@ -104,9 +113,9 @@ try {
             Mount-WindowsImage -ImagePath $WORKING_PATH"\winre.wim" -Index 1 -Path $WINRE_MOUNT -ErrorAction stop 
 
             # Add servicing stack update (Step 1 from the table)
-            Write-Output "$(Get-TS): Adding package $LCU_Path to WinRE"        
+            Write-Output "$(Get-TS): Adding package $LCU_SERVICE_STACK to WinRE"        
             try {
-                Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $LCU_Path   
+                Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $LCU_SERVICE_STACK   
             }
             Catch {
                 $theError = $_
@@ -124,44 +133,44 @@ try {
             # Optional: Add the language to recovery environment
             #
         
-            # Install lp.cab cab
-            Write-Output "$(Get-TS): Adding package $WINPE_OC_LP_PATH to WinRE"
-            Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $WINPE_OC_LP_PATH -ErrorAction stop 
-
             # Install language cabs for each optional package installed
-            $WINRE_INSTALLED_OC = Get-WindowsPackage -Path $WINRE_MOUNT
-            if ($LANG -ne "") {
-                Foreach ($PACKAGE in $WINRE_INSTALLED_OC) {
-                    if ( ($PACKAGE.PackageState -eq "Installed") -and ($PACKAGE.PackageName.startsWith("WinPE-")) -and ($PACKAGE.ReleaseType -eq "FeaturePack") ) {
-                        $INDEX = $PACKAGE.PackageName.IndexOf("-Package")
-                        if ($INDEX -ge 0) {
-                            $OC_CAB = $PACKAGE.PackageName.Substring(0, $INDEX) + "_" + $LANG + ".cab"
-                            if ($WINPE_OC_LANG_CABS.Contains($OC_CAB)) {
-                                $OC_CAB_PATH = Join-Path $WINPE_OC_LANG_PATH $OC_CAB
-                                Write-Output "$(Get-TS): Adding package $OC_CAB_PATH to WinRE"
-                                Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $OC_CAB_PATH -ErrorAction stop   
-                            }
-                        }
-                    }
-                }
-            }
+            # $WINRE_INSTALLED_OC = Get-WindowsPackage -Path $WINRE_MOUNT
+            # if ($LANG -ne "") {
+            #     # Install lp.cab cab
+            #     Write-Output "$(Get-TS): Adding package $WINPE_OC_LP_PATH to WinRE"
+            #     Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $WINPE_OC_LP_PATH -ErrorAction stop 
 
-            # Add font support for the new language
-            if ( (Test-Path -Path $WINPE_FONT_SUPPORT_PATH) ) {
-                Write-Output "$(Get-TS): Adding package $WINPE_FONT_SUPPORT_PATH to WinRE"
-                Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $WINPE_FONT_SUPPORT_PATH -ErrorAction stop 
-            }
+            #     Foreach ($PACKAGE in $WINRE_INSTALLED_OC) {
+            #         if ( ($PACKAGE.PackageState -eq "Installed") -and ($PACKAGE.PackageName.startsWith("WinPE-")) -and ($PACKAGE.ReleaseType -eq "FeaturePack") ) {
+            #             $INDEX = $PACKAGE.PackageName.IndexOf("-Package")
+            #             if ($INDEX -ge 0) {
+            #                 $OC_CAB = $PACKAGE.PackageName.Substring(0, $INDEX) + "_" + $LANG + ".cab"
+            #                 if ($WINPE_OC_LANG_CABS.Contains($OC_CAB)) {
+            #                     $OC_CAB_PATH = Join-Path $WINPE_OC_LANG_PATH $OC_CAB
+            #                     Write-Output "$(Get-TS): Adding package $OC_CAB_PATH to WinRE"
+            #                     Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $OC_CAB_PATH -ErrorAction stop   
+            #                 }
+            #             }
+            #         }
+            #     }
 
-            # Add TTS support for the new language
-            if (Test-Path -Path $WINPE_SPEECH_TTS_PATH) {
-                if ( (Test-Path -Path $WINPE_SPEECH_TTS_LANG_PATH) ) {
-                    Write-Output "$(Get-TS): Adding package $WINPE_SPEECH_TTS_PATH to WinRE"
-                    Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $WINPE_SPEECH_TTS_PATH -ErrorAction stop 
+            #     # Add font support for the new language
+            #     if ( (Test-Path -Path $WINPE_FONT_SUPPORT_PATH) ) {
+            #         Write-Output "$(Get-TS): Adding package $WINPE_FONT_SUPPORT_PATH to WinRE"
+            #         Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $WINPE_FONT_SUPPORT_PATH -ErrorAction stop 
+            #     }
 
-                    Write-Output "$(Get-TS): Adding package $WINPE_SPEECH_TTS_LANG_PATH to WinRE"
-                    Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $WINPE_SPEECH_TTS_LANG_PATH -ErrorAction stop 
-                }
-            }
+            #     # Add TTS support for the new language
+            #     if (Test-Path -Path $WINPE_SPEECH_TTS_PATH) {
+            #         if ( (Test-Path -Path $WINPE_SPEECH_TTS_LANG_PATH) ) {
+            #             Write-Output "$(Get-TS): Adding package $WINPE_SPEECH_TTS_PATH to WinRE"
+            #             Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $WINPE_SPEECH_TTS_PATH -ErrorAction stop 
+
+            #             Write-Output "$(Get-TS): Adding package $WINPE_SPEECH_TTS_LANG_PATH to WinRE"
+            #             Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $WINPE_SPEECH_TTS_LANG_PATH -ErrorAction stop 
+            #         }
+            #     }
+            # }
 
             # Add Safe OS
             Write-Output "$(Get-TS): Adding package $SAFE_OS_DU_PATH to WinRE"
@@ -190,54 +199,60 @@ try {
         #
 
         # Add servicing stack update (Step 17 from the table). Unlike WinRE and WinPE, we don't need to check for error 0x8007007e
-        Write-Output "$(Get-TS): Adding package $LCU_Path to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_Path
+        Write-Output "$(Get-TS): Adding package $LCU_SERVICE_STACK to main OS, index $($IMAGE.ImageIndex)"
+        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_SERVICE_STACK
 
         # Optional: Add language to main OS and corresponding language experience Features on Demand
-        Write-Output "$(Get-TS): Adding package $OS_LP_PATH to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $OS_LP_PATH -ErrorAction stop
+        # Write-Output "$(Get-TS): Adding package $OS_LP_PATH to main OS, index $($IMAGE.ImageIndex)"
+        # Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $OS_LP_PATH -ErrorAction stop
 
         # Write-Output "$(Get-TS): Adding language FOD: Language.Fonts.Jpan~~~und-JPAN~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
         #     Add-WindowsCapability -Name "Language.Fonts.$LANG_FONT_CAPABILITY~~~und-$LANG_FONT_CAPABILITY~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
-        if ($LANG -ne "") {
+        # if ($LANG -ne "") {
 
-            Write-Output "$(Get-TS): Adding language FOD: Language.Basic~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
-            Add-WindowsCapability -Name "Language.Basic~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
+        #     Write-Output "$(Get-TS): Adding language FOD: Language.Basic~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
+        #     Add-WindowsCapability -Name "Language.Basic~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
-            Write-Output "$(Get-TS): Adding language FOD: Language.OCR~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
-            Add-WindowsCapability -Name "Language.OCR~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
+        #     Write-Output "$(Get-TS): Adding language FOD: Language.OCR~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
+        #     Add-WindowsCapability -Name "Language.OCR~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
-            Write-Output "$(Get-TS): Adding language FOD: Language.Handwriting~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
-            Add-WindowsCapability -Name "Language.Handwriting~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
+        #     Write-Output "$(Get-TS): Adding language FOD: Language.Handwriting~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
+        #     Add-WindowsCapability -Name "Language.Handwriting~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
-            Write-Output "$(Get-TS): Adding language FOD: Language.TextToSpeech~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
-            Add-WindowsCapability -Name "Language.TextToSpeech~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
+        #     Write-Output "$(Get-TS): Adding language FOD: Language.TextToSpeech~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
+        #     Add-WindowsCapability -Name "Language.TextToSpeech~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
-            Write-Output "$(Get-TS): Adding language FOD: Language.Speech~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
-            Add-WindowsCapability -Name "Language.Speech~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
+        #     Write-Output "$(Get-TS): Adding language FOD: Language.Speech~~~$LANG~0.0.1.0 to main OS, index $($IMAGE.ImageIndex)"
+        #     Add-WindowsCapability -Name "Language.Speech~~~$LANG~0.0.1.0" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
-        }
+        # }
 
         # Optional: Add additional Features On Demand
-        For ( $index = 0; $index -lt $FOD.count; $index++) {
-            #
-            Write-Output "$(Get-TS): Adding $($FOD[$index]) to main OS, index $($IMAGE.ImageIndex)"
-            Add-WindowsCapability -Name $($FOD[$index]) -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
-        }    
+        # For ( $index = 0; $index -lt $FOD.count; $index++) {
+        #     #
+        #     Write-Output "$(Get-TS): Adding $($FOD[$index]) to main OS, index $($IMAGE.ImageIndex)"
+        #     Add-WindowsCapability -Name $($FOD[$index]) -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
+        # }    
     
-        # Optional: Add Legacy Features
-        For ( $index = 0; $index -lt $OC.count; $index++) {
-            Write-Output "$(Get-TS): Adding $($OC[$index]) to main OS, index $($IMAGE.ImageIndex)"
-            DISM /Image:$MAIN_OS_MOUNT /Enable-Feature /FeatureName:$($OC[$index]) /All 
-            if ($LastExitCode -ne 0) {
-                throw "Error: Failed to add $($OC[$index]) to main OS, index $($IMAGE.ImageIndex). Exit code: $LastExitCode"
-            }
+        # Optional: Add Legacy Features (not image 1, as 'home' doesn't have these)
+        # if ($IMAGE.ImageIndex -eq "0") {
+        #     Write-Output "$(Get-TS): Skipping optional components for image index $($IMAGE.ImageIndex)"
+        # }
+        # else {
+        Write-Output "$(Get-TS): Adding optional components to main OS, index $($IMAGE.ImageIndex)"
+        
+        Enable-WindowsOptionalFeature -Path $MAIN_OS_MOUNT -FeatureName $OC
+
+        # DISM /Image:$MAIN_OS_MOUNT /Enable-Feature /FeatureName:$($OC[$index]) /All 
+        if ($LastExitCode -ne 0) {
+            throw "Error: Failed to add $OC to main OS, index $($IMAGE.ImageIndex). Exit code: $LastExitCode"
         }
+        #}
 
         # Add latest cumulative update
-        Write-Output "$(Get-TS): Adding package $LCU_Path to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_Path -ErrorAction stop 
+        Write-Output "$(Get-TS): Adding package $LCU_CU_PATH to main OS, index $($IMAGE.ImageIndex)"
+        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_CU_PATH -ErrorAction stop 
 
         # Perform image cleanup. Some Optional Components might require the image to be booted, and thus 
         # image cleanup may fail. We'll catch and handle as a warning.
@@ -255,8 +270,8 @@ try {
         }
 
         # Finally, we'll add .NET 3.5 and the .NET cumulative update
-        Write-Output "$(Get-TS): Adding NetFX3~~~~ to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsCapability -Name "NetFX3~~~~" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
+        # Write-Output "$(Get-TS): Adding NetFX3~~~~ to main OS, index $($IMAGE.ImageIndex)"
+        # Add-WindowsCapability -Name "NetFX3~~~~" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
         # Add .NET Cumulative Update
         Write-Output "$(Get-TS): Adding package $DOTNET_CU_PATH to main OS, index $($IMAGE.ImageIndex)"
@@ -287,8 +302,8 @@ try {
 
         # Add servicing stack update (Step 9 from the table)
         try {
-            Write-Output "$(Get-TS): Adding package $LCU_Path to WinPE, image index $($IMAGE.ImageIndex)"
-            Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_Path   
+            Write-Output "$(Get-TS): Adding package $LCU_SERVICE_STACK to WinPE, image index $($IMAGE.ImageIndex)"
+            Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_SERVICE_STACK   
         }
         Catch {
             $theError = $_
@@ -302,57 +317,57 @@ try {
         }
 
         # Install lp.cab cab
-        Write-Output "$(Get-TS): Adding package $WINPE_OC_LP_PATH to WinPE, image index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $WINPE_OC_LP_PATH -ErrorAction stop 
+        # Write-Output "$(Get-TS): Adding package $WINPE_OC_LP_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+        # Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $WINPE_OC_LP_PATH -ErrorAction stop 
 
-        # Install language cabs for each optional package installed
-        $WINPE_INSTALLED_OC = Get-WindowsPackage -Path $WINPE_MOUNT
-        if ($LANG -ne "") {
-            Foreach ($PACKAGE in $WINPE_INSTALLED_OC) {
-                if ( ($PACKAGE.PackageState -eq "Installed") -and ($PACKAGE.PackageName.startsWith("WinPE-")) -and ($PACKAGE.ReleaseType -eq "FeaturePack") ) {
-                    $INDEX = $PACKAGE.PackageName.IndexOf("-Package")
-                    if ($INDEX -ge 0) {
-                        $OC_CAB = $PACKAGE.PackageName.Substring(0, $INDEX) + "_" + $LANG + ".cab"
-                        if ($WINPE_OC_LANG_CABS.Contains($OC_CAB)) {
-                            $OC_CAB_PATH = Join-Path $WINPE_OC_LANG_PATH $OC_CAB
-                            Write-Output "$(Get-TS): Adding package $OC_CAB_PATH to WinPE, image index $($IMAGE.ImageIndex)"
-                            Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $OC_CAB_PATH -ErrorAction stop   
-                        }
-                    }
-                }
-            }
-        }
+        # # Install language cabs for each optional package installed
+        # $WINPE_INSTALLED_OC = Get-WindowsPackage -Path $WINPE_MOUNT
+        # if ($LANG -ne "") {
+        #     Foreach ($PACKAGE in $WINPE_INSTALLED_OC) {
+        #         if ( ($PACKAGE.PackageState -eq "Installed") -and ($PACKAGE.PackageName.startsWith("WinPE-")) -and ($PACKAGE.ReleaseType -eq "FeaturePack") ) {
+        #             $INDEX = $PACKAGE.PackageName.IndexOf("-Package")
+        #             if ($INDEX -ge 0) {
+        #                 $OC_CAB = $PACKAGE.PackageName.Substring(0, $INDEX) + "_" + $LANG + ".cab"
+        #                 if ($WINPE_OC_LANG_CABS.Contains($OC_CAB)) {
+        #                     $OC_CAB_PATH = Join-Path $WINPE_OC_LANG_PATH $OC_CAB
+        #                     Write-Output "$(Get-TS): Adding package $OC_CAB_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+        #                     Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $OC_CAB_PATH -ErrorAction stop   
+        #                 }
+        #             }
+        #         }
+        #     }
+        # }
 
 
         # Add font support for the new language
-        if ( (Test-Path -Path $WINPE_FONT_SUPPORT_PATH) ) {
-            Write-Output "$(Get-TS): Adding package $WINPE_FONT_SUPPORT_PATH to WinPE, image index $($IMAGE.ImageIndex)"
-            Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $WINPE_FONT_SUPPORT_PATH -ErrorAction stop 
-        }
+        # if ( (Test-Path -Path $WINPE_FONT_SUPPORT_PATH) ) {
+        #     Write-Output "$(Get-TS): Adding package $WINPE_FONT_SUPPORT_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+        #     Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $WINPE_FONT_SUPPORT_PATH -ErrorAction stop 
+        # }
 
         # Add TTS support for the new language
-        if (Test-Path -Path $WINPE_SPEECH_TTS_PATH) {
-            if ( (Test-Path -Path $WINPE_SPEECH_TTS_LANG_PATH) ) {
-                Write-Output "$(Get-TS): Adding package $WINPE_SPEECH_TTS_PATH to WinPE, image index $($IMAGE.ImageIndex)"
-                Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $WINPE_SPEECH_TTS_PATH -ErrorAction stop 
+        # if (Test-Path -Path $WINPE_SPEECH_TTS_PATH) {
+        #     if ( (Test-Path -Path $WINPE_SPEECH_TTS_LANG_PATH) ) {
+        #         Write-Output "$(Get-TS): Adding package $WINPE_SPEECH_TTS_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+        #         Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $WINPE_SPEECH_TTS_PATH -ErrorAction stop 
 
-                Write-Output "$(Get-TS): Adding package $WINPE_SPEECH_TTS_LANG_PATH to WinPE, image index $($IMAGE.ImageIndex)"
-                Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $WINPE_SPEECH_TTS_LANG_PATH -ErrorAction stop 
-            }
-        }
+        #         Write-Output "$(Get-TS): Adding package $WINPE_SPEECH_TTS_LANG_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+        #         Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $WINPE_SPEECH_TTS_LANG_PATH -ErrorAction stop 
+        #     }
+        # }
 
-        # Generates a new Lang.ini file which is used to define the language packs inside the image
-        if ( (Test-Path -Path $WINPE_MOUNT"\sources\lang.ini") ) {
-            Write-Output "$(Get-TS): Updating lang.ini"
-            DISM /image:$WINPE_MOUNT /Gen-LangINI /distribution:$WINPE_MOUNT 
-            if ($LastExitCode -ne 0) {
-                throw "Error: Failed to update lang.ini. Exit code: $LastExitCode"
-            }
-        }
+        # # Generates a new Lang.ini file which is used to define the language packs inside the image
+        # if ( (Test-Path -Path $WINPE_MOUNT"\sources\lang.ini") ) {
+        #     Write-Output "$(Get-TS): Updating lang.ini"
+        #     DISM /image:$WINPE_MOUNT /Gen-LangINI /distribution:$WINPE_MOUNT 
+        #     if ($LastExitCode -ne 0) {
+        #         throw "Error: Failed to update lang.ini. Exit code: $LastExitCode"
+        #     }
+        # }
 
         # Add latest cumulative update
-        Write-Output "$(Get-TS): Adding package $LCU_Path to WinPE, image index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_Path -ErrorAction stop 
+        Write-Output "$(Get-TS): Adding package $LCU_CU_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+        Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_CU_PATH -ErrorAction stop 
 
         # Perform image cleanup
         Write-Output "$(Get-TS): Performing image cleanup on WinPE, image index $($IMAGE.ImageIndex)"
@@ -434,6 +449,10 @@ try {
 
 }
 catch {
+    $_
+
+    $_.Exception
+    
     Write-Warning "Something went wrong, attempting to unmount Windows images"
 
     Get-WindowsImage -Mounted | ForEach-Object {
@@ -446,8 +465,8 @@ catch {
 }
 finally {
     # Dismount ISO images
-    Write-Output "$(Get-TS): Dismounting ISO images"
-    Dismount-DiskImage -ImagePath $FOD_ISO_PATH -ErrorAction stop 
+    # Write-Output "$(Get-TS): Dismounting ISO images"
+    # Dismount-DiskImage -ImagePath $FOD_ISO_PATH -ErrorAction stop 
 }
 
 Write-Output "$(Get-TS): Media refresh completed!"
