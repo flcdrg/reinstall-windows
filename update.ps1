@@ -18,8 +18,6 @@ $SETUP_DU_PATH = "C:\mediaRefresh\packages\Other\SetupDynamic\windows11.0-kb5055
 $SAFE_OS_DU_PATH = "C:\mediaRefresh\packages\Other\SafeOSDynamic\windows11.0-kb5057781-x64_0c527ae1d79c06327de2eff7779aa430181eee9b.cab"
 $DOTNET_CU_PATH = "C:\mediaRefresh\packages\Other\windows11.0-kb5054979-x64-ndp481_8e2f730bc747de0f90aaee95d4862e4f88751c07.msu"
 
-$DRIVER_PATH = "C:\mediaRefresh\packages\DeployDriverPack"
-
 # Declare media for FOD and LPs
 #$FOD_ISO_PATH = "C:\mediaRefresh\packages\mul_languages_and_optional_features_for_windows_11_version_24h2_x64_dvd_eb44bee0.iso"
 
@@ -251,11 +249,6 @@ try {
             throw "Error: Failed to add $OC to main OS, index $($IMAGE.ImageIndex). Exit code: $LastExitCode"
         }
         #}
-
-        # Drivers
-        Write-Output "$(Get-TS): Adding drivers from $DRIVER_PATH to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsDriver -Path $MAIN_OS_MOUNT -Driver $DRIVER_PATH -Recurse -ErrorAction stop
-
 
         # Add latest cumulative update
         Write-Output "$(Get-TS): Adding package $LCU_CU_PATH to main OS, index $($IMAGE.ImageIndex)"
