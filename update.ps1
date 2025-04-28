@@ -9,17 +9,20 @@ Write-Output "$(Get-TS): Starting media refresh"
 
 # Declare Dynamic Update packages. A dedicated folder is used for the latest cumulative update, and as needed
 # checkpoint cumulative updates.
-$LCU_PATH = "C:\mediaRefresh\packages\CU\"
+$LCU_PATH = "$PSScriptRoot\packages\CU\"
 
 $LCU_SERVICE_STACK = $LCU_PATH + "windows11.0-kb5043080-x64_953449672073f8fb99badb4cc6d5d7849b9c83e8.msu"
 $LCU_CU_PATH = $LCU_PATH + "windows11.0-kb5055523-x64_b1df8c7b11308991a9c45ae3fba6caa0e2996157.msu"
 
-$SETUP_DU_PATH = "C:\mediaRefresh\packages\Other\SetupDynamic\windows11.0-kb5055643-x64_11bedc2e384c9f4f8db1ef551e438e4dce181202.cab"
-$SAFE_OS_DU_PATH = "C:\mediaRefresh\packages\Other\SafeOSDynamic\windows11.0-kb5057781-x64_0c527ae1d79c06327de2eff7779aa430181eee9b.cab"
-$DOTNET_CU_PATH = "C:\mediaRefresh\packages\Other\windows11.0-kb5054979-x64-ndp481_8e2f730bc747de0f90aaee95d4862e4f88751c07.msu"
+$SETUP_DU_PATH = "$PSScriptRoot\packages\Other\SetupDynamic\windows11.0-kb5055643-x64_11bedc2e384c9f4f8db1ef551e438e4dce181202.cab"
+$SAFE_OS_DU_PATH = "$PSScriptRoot\packages\Other\SafeOSDynamic\windows11.0-kb5057781-x64_0c527ae1d79c06327de2eff7779aa430181eee9b.cab"
+$DOTNET_CU_PATH = "$PSScriptRoot\packages\Other\windows11.0-kb5054979-x64-ndp481_8e2f730bc747de0f90aaee95d4862e4f88751c07.msu"
+
+$DRIVER_PATH = "$PSScriptRoot\packages\DeployDriverPack"
+$DRIVER_ADDTIONAL_PATH = "$PSScriptRoot\packages\OtherDrivers"
 
 # Declare media for FOD and LPs
-#$FOD_ISO_PATH = "C:\mediaRefresh\packages\mul_languages_and_optional_features_for_windows_11_version_24h2_x64_dvd_eb44bee0.iso"
+#$FOD_ISO_PATH = "$PSScriptRoot\packages\mul_languages_and_optional_features_for_windows_11_version_24h2_x64_dvd_eb44bee0.iso"
 
 # Array of Features On Demand for main OS
 # This is optional to showcase where these are added
@@ -56,12 +59,12 @@ $OC = @(
 #$OS_LP_PATH = "$FOD_PATH\Microsoft-Windows-Client-Language-Pack_x64_$LANG.cab"
 
 # Declare folders for mounted images and temp files
-$MEDIA_OLD_PATH = "C:\mediaRefresh\oldMedia\Ge\client_professional_en-us"
-$MEDIA_NEW_PATH = "C:\mediaRefresh\newMedia"
-$WORKING_PATH = "C:\mediaRefresh\temp"
-$MAIN_OS_MOUNT = "C:\mediaRefresh\temp\MainOSMount"
-$WINRE_MOUNT = "C:\mediaRefresh\temp\WinREMount"
-$WINPE_MOUNT = "C:\mediaRefresh\temp\WinPEMount"
+$MEDIA_OLD_PATH = "$PSScriptRoot\oldMedia\Ge\client_professional_en-us"
+$MEDIA_NEW_PATH = "$PSScriptRoot\newMedia"
+$WORKING_PATH = "$PSScriptRoot\temp"
+$MAIN_OS_MOUNT = "$PSScriptRoot\temp\MainOSMount"
+$WINRE_MOUNT = "$PSScriptRoot\temp\WinREMount"
+$WINPE_MOUNT = "$PSScriptRoot\temp\WinPEMount"
 
 # Remove old temp directories
 if (Test-Path -Path $WORKING_PATH) {
@@ -80,7 +83,12 @@ Write-Output "$(Get-TS): Copying original media to new media path"
 
 robocopy $MEDIA_OLD_PATH $MEDIA_NEW_PATH /S #/XF install.wim
 
+Get-ChildItem $MEDIA_NEW_PATH -Recurse install.wim
+
 Get-ChildItem -Path $MEDIA_NEW_PATH -Recurse | Where-Object { -not $_.PSIsContainer -and $_.IsReadOnly } | ForEach-Object { $_.IsReadOnly = $false }
+
+# Expand driver cabs
+Get-ChildItem -Recurse .\packages\OtherDrivers\ *.cab | ForEach-Object { expand $_ -F:* "$($_.DirectoryName)" }
 
 try {
 
@@ -249,6 +257,13 @@ try {
             throw "Error: Failed to add $OC to main OS, index $($IMAGE.ImageIndex). Exit code: $LastExitCode"
         }
         #}
+
+        # Drivers
+        Write-Output "$(Get-TS): Adding drivers from $DRIVER_PATH to main OS, index $($IMAGE.ImageIndex)"
+        Add-WindowsDriver -Path $MAIN_OS_MOUNT -Driver $DRIVER_PATH -Recurse -ErrorAction stop
+
+        Write-Output "$(Get-TS): Adding drivers from $DRIVER_ADDTIONAL_PATH to main OS, index $($IMAGE.ImageIndex)"
+        Add-WindowsDriver -Path $MAIN_OS_MOUNT -Driver $DRIVER_ADDTIONAL_PATH -Recurse -ErrorAction stop
 
         # Add latest cumulative update
         Write-Output "$(Get-TS): Adding package $LCU_CU_PATH to main OS, index $($IMAGE.ImageIndex)"
