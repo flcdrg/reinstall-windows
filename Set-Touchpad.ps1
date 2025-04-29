@@ -284,7 +284,7 @@ if ($PSVersionTable.PSVersion.Major -eq 5) {
     Add-Type -CompilerParameters $cp -TypeDefinition $source -Language CSharp
 }
 elseif ($PSVersionTable.PSVersion.Major -eq 7) {
-    Add-Type -CompilerOptions '/unsafe' $cp -TypeDefinition $source -Language CSharp
+    Add-Type -CompilerOptions '/unsafe' -TypeDefinition $source -Language CSharp
 }
 
 
