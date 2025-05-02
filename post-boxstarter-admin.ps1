@@ -74,7 +74,7 @@ Register-ScheduledTask -TaskName $taskName -Description $taskDescription -Action
 # and a scheduled task to run Robocopy
 $taskName = "Backup Dev Drive"
 $taskDescription = "Backup the Dev Drive to the backup VHD"
-$action = New-ScheduledTaskAction -Execute "robocopy" -Argument "d:\ e:\ /mir /xj /xd 'D:\System Volume Information\' 'D:\`$RECYCLE.BIN\' 'd:\.pnpm-store"
+$action = New-ScheduledTaskAction -Execute "robocopy" -Argument "d:\ e:\ /mir /xj /xd 'D:\System Volume Information\' 'D:\`$RECYCLE.BIN\' 'd:\.pnpm-store' 'd:\packages'"
 $trigger = New-ScheduledTaskTrigger -Weekly -At "4:00PM" -DaysOfWeek Friday
 
 Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue | Unregister-ScheduledTask -Confirm:$false -ErrorAction SilentlyContinue
