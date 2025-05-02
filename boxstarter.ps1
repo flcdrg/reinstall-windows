@@ -178,6 +178,9 @@ Set-WindowsExplorerOptions -EnableShowFileExtensions -EnableExpandToOpenFolder
 # Avoid clash with builtin function
 Boxstarter.WinConfig\Install-WindowsUpdate -getUpdatesFromMS -acceptEula
 
+# Enable updates from other Microsoft products
+Set-ItemProperty -Path hklm:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -Value 1 -Type DWord
+
 Enable-UAC
 
 # Restore VirusTotal
