@@ -9,6 +9,8 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-cred
 # pnpm global store - https://pnpm.io/cli/store
 [Environment]::SetEnvironmentVariable("PNPM_HOME", "D:\pnpm-store\", [System.EnvironmentVariableTarget]::User)
 
+# Add pnpm global store to path (to support global packages)
+./Set-PathVariable.ps1 -NewLocation "D:\pnpm-store\"
+
 # Enable Clipboard History
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
-
