@@ -20,3 +20,6 @@ wsl --install
 
 # Uninstall Boxstarter temporary package (update package name as appropriate)
 choco uninstall tmp3E2.tmp --skip-autouninstaller --skip-powershell
+
+# Chocolatey
+choco config set --name="'defaultPushSource'" --value="'https://push.chocolatey.org/'"
