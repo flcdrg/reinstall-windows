@@ -49,7 +49,7 @@ Remove-Item .\packages.config
 
 $vhdPath = "C:\Drives\DevDriveBackup.vhd"
 
-New-VHD -Path $vhdPath -Dynamic -SizeBytes 300000000000 |
+New-VHD -Path $vhdPath -Dynamic -SizeBytes 400000000000 |
 Mount-VHD -Passthru |
     Initialize-Disk -PassThru |     
     New-Partition -AssignDriveLetter -UseMaximumSize | 
@@ -74,7 +74,8 @@ Register-ScheduledTask -TaskName $taskName -Description $taskDescription -Action
 # and a scheduled task to run Robocopy
 $taskName = "Backup Dev Drive"
 $taskDescription = "Backup the Dev Drive to the backup VHD"
-$action = New-ScheduledTaskAction -Execute "robocopy" -Argument "d:\ e:\ /mir /xj /xd 'D:\System Volume Information\' 'D:\`$RECYCLE.BIN\' 'd:\.pnpm-store' 'd:\packages'"
+# /c robocopy d:\ e:\ /mir /xj /xf *.iso /xf backup.log /xd "d:\$RECYCLE.BIN" d:\.pnpm-store d:\pnpm-store d:\packages d:\VS d:\symbols > d:\backup.log
+$action = New-ScheduledTaskAction -Execute "cmd" -Argument "/c robocopy d:\ e:\ /mir /xj /xf *.iso /xf backup.log /xd `"`$RECYCLE.BIN`" d:\.pnpm-store d:\pnpm-store d:\packages d:\VS d:\symbols > d:\backup.log"
 $trigger = New-ScheduledTaskTrigger -Weekly -At "4:00PM" -DaysOfWeek Friday
 
 Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue | Unregister-ScheduledTask -Confirm:$false -ErrorAction SilentlyContinue
