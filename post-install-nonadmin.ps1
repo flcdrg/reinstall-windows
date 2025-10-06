@@ -12,5 +12,8 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-cred
 # Add pnpm global store to path (to support global packages)
 ./Set-PathVariable.ps1 -NewLocation "D:\pnpm-store\"
 
+# Python UV cache
+[Environment]::SetEnvironmentVariable("UV_CACHE_DIR", "D:\uv-cache\", [System.EnvironmentVariableTarget]::User)
+
 # Enable Clipboard History
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
