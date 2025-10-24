@@ -15,5 +15,12 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-cred
 # Python UV cache
 [Environment]::SetEnvironmentVariable("UV_CACHE_DIR", "D:\uv-cache\", [System.EnvironmentVariableTarget]::User)
 
+# Gradle (Java)
+[Environment]::SetEnvironmentVariable("GRADLE_USER_HOME", "d:\.gradle", [System.EnvironmentVariableTarget]::User)
+
 # Enable Clipboard History
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
+
+# Create .zip file that includes all BC*.xml files
+Compress-Archive -Path "BC*.xml" -DestinationPath "BCSettings.bcpkg" -Force
+& "$($env:ProgramFiles)\Beyond Compare 5\BComp.com" .\BCSettings.bcpkg /silent

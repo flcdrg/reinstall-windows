@@ -403,3 +403,6 @@ newMedia
 oldMedia
 packages
 temp
+
+# Beyond Compare settings
+*.bcpkg
