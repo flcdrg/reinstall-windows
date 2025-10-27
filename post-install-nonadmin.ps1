@@ -18,6 +18,9 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-cred
 # Gradle (Java)
 [Environment]::SetEnvironmentVariable("GRADLE_USER_HOME", "d:\.gradle", [System.EnvironmentVariableTarget]::User)
 
+# Symbols
+[Environment]::SetEnvironmentVariable("_NT_SYMBOL_PATH", "srv*d:\symbols*https://msdl.microsoft.com/download/symbols", [System.EnvironmentVariableTarget]::User)
+
 # Enable Clipboard History
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
 
