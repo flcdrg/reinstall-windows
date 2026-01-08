@@ -10,12 +10,16 @@ Copy-Item .\prefs.js -Destination "$($firefoxProfile.FullName)\user.js"
 
 # Git configuration
 
-# git config --global core.editor "code --wait"
-# git config --global fetch.prune true
-# git config --global push.autoSetupRemote true
-# git config --global user.email "david@gardiner.net.au"
-# git config --global user.name "David Gardiner"
-# git config --global init.defaultbranch "main"
+<#
+git config --global core.editor "code --wait"
+git config --global fetch.prune true
+git config --global push.autoSetupRemote true
+git config --global user.email "david@gardiner.net.au"
+git config --global user.name "David Gardiner"
+git config --global init.defaultbranch "main"
+git config --global --add --bool rebase.updateRefs true
+#>
+
 Copy-Item $env:OneDrive\Desktop\.gitconfig* $env:USERPROFILE\
 
 # Windows Terminal
