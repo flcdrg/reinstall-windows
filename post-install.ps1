@@ -23,3 +23,6 @@ choco uninstall tmp3E2.tmp --skip-autouninstaller --skip-powershell
 
 # Chocolatey
 choco config set --name="'defaultPushSource'" --value="'https://push.chocolatey.org/'"
+
+# Re-Trust Dev Drive - https://learn.microsoft.com/windows/dev-drive/?WT.mc_id=DOP-MVP-5001655#how-do-i-designate-a-dev-drive-as-trusted
+fsutil devdrv trust D:
