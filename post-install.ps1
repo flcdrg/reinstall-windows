@@ -1,4 +1,5 @@
 # PowerShell modules. Run this from elevated PowerShell 7
+# Equivalent code from this file is embedded in the autounattend.xml (as part of the FirstLogon scripts)
 
 # Remove preinstalled Pester
 $module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
@@ -26,3 +27,6 @@ choco config set --name="'defaultPushSource'" --value="'https://push.chocolatey.
 
 # Re-Trust Dev Drive - https://learn.microsoft.com/windows/dev-drive/?WT.mc_id=DOP-MVP-5001655#how-do-i-designate-a-dev-drive-as-trusted
 fsutil devdrv trust D:
+
+# Re-enable Windows Spotlight (https://github.com/cschneegans/unattend-generator/issues/222)
+reg.exe add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableCloudOptimizedContent" /t REG_DWORD /d 1 /f
