@@ -21,6 +21,9 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-cred
 # Symbols
 [Environment]::SetEnvironmentVariable("_NT_SYMBOL_PATH", "srv*d:\symbols*https://msdl.microsoft.com/download/symbols", [System.EnvironmentVariableTarget]::User)
 
+# Tell Corepack not to automatically add packageManager to package.json files (https://blog.hyperknot.com/p/corepacks-packagemanager-field)
+[Environment]::SetEnvironmentVariable("COREPACK_ENABLE_AUTO_PIN", "0", [System.EnvironmentVariableTarget]::User)
+
 # Enable Clipboard History
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
 

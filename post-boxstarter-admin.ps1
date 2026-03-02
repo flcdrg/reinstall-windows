@@ -24,12 +24,10 @@ OperatingSystem C:      1,168.93 FullyEncrypted         100        {Tpm, Recover
 
 If I enable Bitlocker using a PowerShell cmdlet `Enable-BitLocker -MountPoint c: -EncryptionMethod XtsAes128 -TpmProtector -UsedSpaceOnly`
 
-Then the result is that the KeyProtector is only `Tmp`.
+Then the result is that the KeyProtector is only `Tpm`.
 
 I can see that there is an option to run [`Add-BitLockerKeyProtector`](https://learn.microsoft.com/en-au/powershell/module/bitlocker/add-bitlockerkeyprotector?view=windowsserver2025-ps&WT.mc_id=DOP-MVP-5001655) but if you specify `-RecoveryPasswordProtector` then it asks for a password
 
-
-473264-100221-495330-519255-058069-253814-033363-298067
 #>
 
 
