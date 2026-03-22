@@ -406,3 +406,5 @@ temp
 
 # Beyond Compare settings
 *.bcpkg
+
+*.iso

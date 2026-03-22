@@ -81,3 +81,6 @@ Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue | Unregister
 
 Register-ScheduledTask -TaskName $taskName -Description $taskDescription -Action $action -Trigger $trigger -Principal $principal -Settings $settings
 
+# Create .zip file that includes all BC*.xml files
+Compress-Archive -Path "BC*.xml" -DestinationPath "BCSettings.bcpkg" -Force
+& "$($env:ProgramFiles)\Beyond Compare 5\BComp.com" .\BCSettings.bcpkg /silent

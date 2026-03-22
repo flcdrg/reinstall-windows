@@ -1,5 +1,7 @@
 #Requires -RunAsAdministrator
 
+# From https://learn.microsoft.com/en-us/windows/deployment/update/media-dynamic-update#get-started
+
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
@@ -11,12 +13,9 @@ Write-Output "$(Get-TS): Starting media refresh"
 # checkpoint cumulative updates.
 $LCU_PATH = "$PSScriptRoot\packages\CU\"
 
-$LCU_SERVICE_STACK = $LCU_PATH + "windows11.0-kb5043080-x64_953449672073f8fb99badb4cc6d5d7849b9c83e8.msu"
-$LCU_CU_PATH = $LCU_PATH + "windows11.0-kb5055523-x64_b1df8c7b11308991a9c45ae3fba6caa0e2996157.msu"
-
-$SETUP_DU_PATH = "$PSScriptRoot\packages\Other\SetupDynamic\windows11.0-kb5055643-x64_11bedc2e384c9f4f8db1ef551e438e4dce181202.cab"
-$SAFE_OS_DU_PATH = "$PSScriptRoot\packages\Other\SafeOSDynamic\windows11.0-kb5057781-x64_0c527ae1d79c06327de2eff7779aa430181eee9b.cab"
-$DOTNET_CU_PATH = "$PSScriptRoot\packages\Other\windows11.0-kb5054979-x64-ndp481_8e2f730bc747de0f90aaee95d4862e4f88751c07.msu"
+$SETUP_DU_PATH = Get-ChildItem "$PSScriptRoot\packages\Other\SetupDynamic\*.cab" | Select-Object -First 1 -ExpandProperty FullName
+$SAFE_OS_DU_PATH = Get-ChildItem "$PSScriptRoot\packages\Other\SafeOSDynamic\*.cab" | Select-Object -First 1 -ExpandProperty FullName
+$DOTNET_CU_PATH = Get-ChildItem "$PSScriptRoot\packages\Other\windows11.0-*-ndp481_*.msu" | Select-Object -First 1 -ExpandProperty FullName
 
 $DRIVER_PATH = "$PSScriptRoot\packages\DeployDriverPack"
 $DRIVER_ADDTIONAL_PATH = "$PSScriptRoot\packages\OtherDrivers"
@@ -61,10 +60,12 @@ $OC = @(
 # Declare folders for mounted images and temp files
 $MEDIA_OLD_PATH = "$PSScriptRoot\oldMedia\Ge\client_professional_en-us"
 $MEDIA_NEW_PATH = "$PSScriptRoot\newMedia"
-$WORKING_PATH = "$PSScriptRoot\temp"
-$MAIN_OS_MOUNT = "$PSScriptRoot\temp\MainOSMount"
-$WINRE_MOUNT = "$PSScriptRoot\temp\WinREMount"
-$WINPE_MOUNT = "$PSScriptRoot\temp\WinPEMount"
+
+# This should not be a ReFS/DevDrive!
+$WORKING_PATH = "c:\isotemp"
+$MAIN_OS_MOUNT = "$WORKING_PATH\MainOSMount"
+$WINRE_MOUNT = "$WORKING_PATH\WinREMount"
+$WINPE_MOUNT = "$WORKING_PATH\WinPEMount"
 
 # Remove old temp directories
 if (Test-Path -Path $WORKING_PATH) {
@@ -104,7 +105,7 @@ try {
 
     # Just do 1st and 6th image (Home and Pro)
     #Foreach ($IMAGE in $WINOS_IMAGES[0, 5]) {
-    $selectedImages = @($WINOS_IMAGES[5])
+    $selectedImages = @($WINOS_IMAGES[0])
     Foreach ($IMAGE in $selectedImages) {
 
         # first mount the main OS image
@@ -121,9 +122,9 @@ try {
             Mount-WindowsImage -ImagePath $WORKING_PATH"\winre.wim" -Index 1 -Path $WINRE_MOUNT -ErrorAction stop 
 
             # Add servicing stack update (Step 1 from the table)
-            Write-Output "$(Get-TS): Adding package $LCU_SERVICE_STACK to WinRE"        
+            Write-Output "$(Get-TS): Adding package $LCU_PATH to WinRE"        
             try {
-                Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $LCU_SERVICE_STACK   
+                Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $LCU_PATH   
             }
             Catch {
                 $theError = $_
@@ -133,7 +134,7 @@ try {
                     Write-Warning "$(Get-TS): Failed with error 0x8007007e. This failure is a known issue with combined cumulative update, we can ignore."
                 }
                 else {
-                    throw
+                    Write-Warning "$(Get-TS): Failed to add $LCU_PATH to WinRE. Exit code: $($theError.Exception.HResult). This is a warning, but the cumulative update will not be added to WinRE, which may cause issues with future updates if the servicing stack in WinRE is too old."
                 }
             }
 
@@ -207,8 +208,8 @@ try {
         #
 
         # Add servicing stack update (Step 17 from the table). Unlike WinRE and WinPE, we don't need to check for error 0x8007007e
-        Write-Output "$(Get-TS): Adding package $LCU_SERVICE_STACK to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_SERVICE_STACK
+        Write-Output "$(Get-TS): Adding package $LCU_PATH to main OS, index $($IMAGE.ImageIndex)"
+        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_PATH
 
         # Optional: Add language to main OS and corresponding language experience Features on Demand
         # Write-Output "$(Get-TS): Adding package $OS_LP_PATH to main OS, index $($IMAGE.ImageIndex)"
@@ -266,8 +267,8 @@ try {
         Add-WindowsDriver -Path $MAIN_OS_MOUNT -Driver $DRIVER_ADDTIONAL_PATH -Recurse -ErrorAction stop
 
         # Add latest cumulative update
-        Write-Output "$(Get-TS): Adding package $LCU_CU_PATH to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_CU_PATH -ErrorAction stop 
+        Write-Output "$(Get-TS): Adding package $LCU_PATH to main OS, index $($IMAGE.ImageIndex)"
+        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_PATH -ErrorAction stop 
 
         # Perform image cleanup. Some Optional Components might require the image to be booted, and thus 
         # image cleanup may fail. We'll catch and handle as a warning.
@@ -289,8 +290,10 @@ try {
         # Add-WindowsCapability -Name "NetFX3~~~~" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
         # Add .NET Cumulative Update
-        Write-Output "$(Get-TS): Adding package $DOTNET_CU_PATH to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $DOTNET_CU_PATH -ErrorAction stop 
+        if ($DOTNET_CU_PATH -ne "") {
+            Write-Output "$(Get-TS): Adding package $DOTNET_CU_PATH to main OS, index $($IMAGE.ImageIndex)"
+            Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $DOTNET_CU_PATH -ErrorAction stop 
+        }
 
         # Dismount
         Dismount-WindowsImage -Path $MAIN_OS_MOUNT -Save -ErrorAction stop 
@@ -317,8 +320,8 @@ try {
 
         # Add servicing stack update (Step 9 from the table)
         try {
-            Write-Output "$(Get-TS): Adding package $LCU_SERVICE_STACK to WinPE, image index $($IMAGE.ImageIndex)"
-            Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_SERVICE_STACK   
+            Write-Output "$(Get-TS): Adding package $LCU_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+            Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_PATH   
         }
         Catch {
             $theError = $_
@@ -381,8 +384,8 @@ try {
         # }
 
         # Add latest cumulative update
-        Write-Output "$(Get-TS): Adding package $LCU_CU_PATH to WinPE, image index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_CU_PATH -ErrorAction stop 
+        Write-Output "$(Get-TS): Adding package $LCU_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+        Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_PATH -ErrorAction stop 
 
         # Perform image cleanup
         Write-Output "$(Get-TS): Performing image cleanup on WinPE, image index $($IMAGE.ImageIndex)"
