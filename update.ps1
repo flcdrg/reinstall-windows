@@ -7,15 +7,44 @@ Set-StrictMode -Version Latest
 
 function Get-TS { return "{0:HH:mm:ss}" -f [DateTime]::Now }
 
+function Get-FirstFilePath {
+    param (
+        [Parameter(Mandatory)]
+        [string]$PathPattern
+    )
+
+    $file = Get-ChildItem -Path $PathPattern -File -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($null -ne $file) {
+        return $file.FullName
+    }
+
+    return $null
+}
+
+function Test-DirectoryHasFiles {
+    param (
+        [Parameter(Mandatory)]
+        [string]$Path,
+        [string]$Filter = '*'
+    )
+
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return $false
+    }
+
+    return $null -ne (Get-ChildItem -Path $Path -Recurse -File -Filter $Filter -ErrorAction SilentlyContinue | Select-Object -First 1)
+}
+
 Write-Output "$(Get-TS): Starting media refresh"
 
 # Declare Dynamic Update packages. A dedicated folder is used for the latest cumulative update, and as needed
 # checkpoint cumulative updates.
-$LCU_PATH = "$PSScriptRoot\packages\CU\"
 
-$SETUP_DU_PATH = Get-ChildItem "$PSScriptRoot\packages\Other\SetupDynamic\*.cab" | Select-Object -First 1 -ExpandProperty FullName
-$SAFE_OS_DU_PATH = Get-ChildItem "$PSScriptRoot\packages\Other\SafeOSDynamic\*.cab" | Select-Object -First 1 -ExpandProperty FullName
-$DOTNET_CU_PATH = Get-ChildItem "$PSScriptRoot\packages\Other\windows11.0-*-ndp481_*.msu" | Select-Object -First 1 -ExpandProperty FullName
+$LCU_PATH = Get-FirstFilePath "$PSScriptRoot\packages\CU\*.msu"
+
+$SETUP_DU_PATH = Get-FirstFilePath "$PSScriptRoot\packages\Other\SetupDynamic\*.cab"
+$SAFE_OS_DU_PATH = Get-FirstFilePath "$PSScriptRoot\packages\Other\SafeOSDynamic\*.cab"
+$DOTNET_CU_PATH = Get-FirstFilePath "$PSScriptRoot\packages\Other\windows11.0-*-ndp481_*.msu"
 
 $DRIVER_PATH = "$PSScriptRoot\packages\DeployDriverPack"
 $DRIVER_ADDTIONAL_PATH = "$PSScriptRoot\packages\OtherDrivers"
@@ -35,7 +64,9 @@ $OC = @(
     'Client-ProjFS',
     'TelnetClient',
     'VirtualMachinePlatform',
-    'Microsoft-Windows-Subsystem-Linux'
+    'Microsoft-Windows-Subsystem-Linux',
+    'Microsoft-Hyper-V-All',
+    'Microsoft-RemoteDesktopConnection'
 )
 
 # Mount the Features on Demand ISO
@@ -89,7 +120,12 @@ Get-ChildItem $MEDIA_NEW_PATH -Recurse install.wim
 Get-ChildItem -Path $MEDIA_NEW_PATH -Recurse | Where-Object { -not $_.PSIsContainer -and $_.IsReadOnly } | ForEach-Object { $_.IsReadOnly = $false }
 
 # Expand driver cabs
-Get-ChildItem -Recurse .\packages\OtherDrivers\ *.cab | ForEach-Object { expand $_ -F:* "$($_.DirectoryName)" }
+if (Test-DirectoryHasFiles -Path $DRIVER_ADDTIONAL_PATH -Filter '*.cab') {
+    Get-ChildItem -Path $DRIVER_ADDTIONAL_PATH -Recurse -File -Filter '*.cab' | ForEach-Object { expand $_ -F:* "$($_.DirectoryName)" }
+}
+else {
+    Write-Warning "$(Get-TS): Skipping driver CAB expansion from $DRIVER_ADDTIONAL_PATH (no .cab files found)"
+}
 
 try {
 
@@ -122,20 +158,25 @@ try {
             Mount-WindowsImage -ImagePath $WORKING_PATH"\winre.wim" -Index 1 -Path $WINRE_MOUNT -ErrorAction stop 
 
             # Add servicing stack update (Step 1 from the table)
-            Write-Output "$(Get-TS): Adding package $LCU_PATH to WinRE"        
-            try {
-                Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $LCU_PATH   
-            }
-            Catch {
-                $theError = $_
-                Write-Output "$(Get-TS): $theError"
+            if ($LCU_PATH) {
+                Write-Output "$(Get-TS): Adding package $LCU_PATH to WinRE"        
+                try {
+                    Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $LCU_PATH   
+                }
+                Catch {
+                    $theError = $_
+                    Write-Output "$(Get-TS): $theError"
         
-                if ($theError.Exception -like "*0x8007007e*") {
-                    Write-Warning "$(Get-TS): Failed with error 0x8007007e. This failure is a known issue with combined cumulative update, we can ignore."
+                    if ($theError.Exception -like "*0x8007007e*") {
+                        Write-Warning "$(Get-TS): Failed with error 0x8007007e. This failure is a known issue with combined cumulative update, we can ignore."
+                    }
+                    else {
+                        Write-Warning "$(Get-TS): Failed to add $LCU_PATH to WinRE. Exit code: $($theError.Exception.HResult). This is a warning, but the cumulative update will not be added to WinRE, which may cause issues with future updates if the servicing stack in WinRE is too old."
+                    }
                 }
-                else {
-                    Write-Warning "$(Get-TS): Failed to add $LCU_PATH to WinRE. Exit code: $($theError.Exception.HResult). This is a warning, but the cumulative update will not be added to WinRE, which may cause issues with future updates if the servicing stack in WinRE is too old."
-                }
+            }
+            else {
+                Write-Warning "$(Get-TS): Skipping WinRE cumulative update step (no .msu found under packages\CU)"
             }
 
             #
@@ -182,8 +223,13 @@ try {
             # }
 
             # Add Safe OS
-            Write-Output "$(Get-TS): Adding package $SAFE_OS_DU_PATH to WinRE"
-            Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $SAFE_OS_DU_PATH -ErrorAction stop 
+            if ($SAFE_OS_DU_PATH) {
+                Write-Output "$(Get-TS): Adding package $SAFE_OS_DU_PATH to WinRE"
+                Add-WindowsPackage -Path $WINRE_MOUNT -PackagePath $SAFE_OS_DU_PATH -ErrorAction stop 
+            }
+            else {
+                Write-Warning "$(Get-TS): Skipping Safe OS Dynamic Update step (no .cab found in packages\Other\SafeOSDynamic)"
+            }
 
             # Perform image cleanup
             Write-Output "$(Get-TS): Performing image cleanup on WinRE"
@@ -208,8 +254,13 @@ try {
         #
 
         # Add servicing stack update (Step 17 from the table). Unlike WinRE and WinPE, we don't need to check for error 0x8007007e
-        Write-Output "$(Get-TS): Adding package $LCU_PATH to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_PATH
+        if ($LCU_PATH) {
+            Write-Output "$(Get-TS): Adding package $LCU_PATH to main OS, index $($IMAGE.ImageIndex)"
+            Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_PATH
+        }
+        else {
+            Write-Warning "$(Get-TS): Skipping main OS cumulative update step, index $($IMAGE.ImageIndex) (no .msu found under packages\CU)"
+        }
 
         # Optional: Add language to main OS and corresponding language experience Features on Demand
         # Write-Output "$(Get-TS): Adding package $OS_LP_PATH to main OS, index $($IMAGE.ImageIndex)"
@@ -260,15 +311,30 @@ try {
         #}
 
         # Drivers
-        Write-Output "$(Get-TS): Adding drivers from $DRIVER_PATH to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsDriver -Path $MAIN_OS_MOUNT -Driver $DRIVER_PATH -Recurse -ErrorAction stop
+        if (Test-DirectoryHasFiles -Path $DRIVER_PATH -Filter '*.inf') {
+            Write-Output "$(Get-TS): Adding drivers from $DRIVER_PATH to main OS, index $($IMAGE.ImageIndex)"
+            Add-WindowsDriver -Path $MAIN_OS_MOUNT -Driver $DRIVER_PATH -Recurse -ErrorAction stop
+        }
+        else {
+            Write-Warning "$(Get-TS): Skipping driver injection from $DRIVER_PATH for main OS, index $($IMAGE.ImageIndex) (no .inf files found)"
+        }
 
-        Write-Output "$(Get-TS): Adding drivers from $DRIVER_ADDTIONAL_PATH to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsDriver -Path $MAIN_OS_MOUNT -Driver $DRIVER_ADDTIONAL_PATH -Recurse -ErrorAction stop
+        if (Test-DirectoryHasFiles -Path $DRIVER_ADDTIONAL_PATH -Filter '*.inf') {
+            Write-Output "$(Get-TS): Adding drivers from $DRIVER_ADDTIONAL_PATH to main OS, index $($IMAGE.ImageIndex)"
+            Add-WindowsDriver -Path $MAIN_OS_MOUNT -Driver $DRIVER_ADDTIONAL_PATH -Recurse -ErrorAction stop
+        }
+        else {
+            Write-Warning "$(Get-TS): Skipping driver injection from $DRIVER_ADDTIONAL_PATH for main OS, index $($IMAGE.ImageIndex) (no .inf files found)"
+        }
 
         # Add latest cumulative update
-        Write-Output "$(Get-TS): Adding package $LCU_PATH to main OS, index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_PATH -ErrorAction stop 
+        if ($LCU_PATH) {
+            Write-Output "$(Get-TS): Adding package $LCU_PATH to main OS, index $($IMAGE.ImageIndex)"
+            Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $LCU_PATH -ErrorAction stop 
+        }
+        else {
+            Write-Warning "$(Get-TS): Skipping main OS cumulative update (latest CU) step, index $($IMAGE.ImageIndex) (no .msu found under packages\CU)"
+        }
 
         # Perform image cleanup. Some Optional Components might require the image to be booted, and thus 
         # image cleanup may fail. We'll catch and handle as a warning.
@@ -290,9 +356,12 @@ try {
         # Add-WindowsCapability -Name "NetFX3~~~~" -Path $MAIN_OS_MOUNT -Source $FOD_PATH -ErrorAction stop 
 
         # Add .NET Cumulative Update
-        if ($DOTNET_CU_PATH -ne "") {
+        if ($DOTNET_CU_PATH) {
             Write-Output "$(Get-TS): Adding package $DOTNET_CU_PATH to main OS, index $($IMAGE.ImageIndex)"
             Add-WindowsPackage -Path $MAIN_OS_MOUNT -PackagePath $DOTNET_CU_PATH -ErrorAction stop 
+        }
+        else {
+            Write-Warning "$(Get-TS): Skipping .NET cumulative update step, index $($IMAGE.ImageIndex) (no matching NDP .msu found)"
         }
 
         # Dismount
@@ -320,8 +389,13 @@ try {
 
         # Add servicing stack update (Step 9 from the table)
         try {
-            Write-Output "$(Get-TS): Adding package $LCU_PATH to WinPE, image index $($IMAGE.ImageIndex)"
-            Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_PATH   
+            if ($LCU_PATH) {
+                Write-Output "$(Get-TS): Adding package $LCU_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+                Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_PATH
+            }
+            else {
+                Write-Warning "$(Get-TS): Skipping WinPE cumulative update step, image index $($IMAGE.ImageIndex) (no .msu found under packages\CU)"
+            }
         }
         Catch {
             $theError = $_
@@ -384,8 +458,13 @@ try {
         # }
 
         # Add latest cumulative update
-        Write-Output "$(Get-TS): Adding package $LCU_PATH to WinPE, image index $($IMAGE.ImageIndex)"
-        Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_PATH -ErrorAction stop 
+        if ($LCU_PATH) {
+            Write-Output "$(Get-TS): Adding package $LCU_PATH to WinPE, image index $($IMAGE.ImageIndex)"
+            Add-WindowsPackage -Path $WINPE_MOUNT -PackagePath $LCU_PATH -ErrorAction stop 
+        }
+        else {
+            Write-Warning "$(Get-TS): Skipping WinPE latest cumulative update step, image index $($IMAGE.ImageIndex) (no .msu found under packages\CU)"
+        }
 
         # Perform image cleanup
         Write-Output "$(Get-TS): Performing image cleanup on WinPE, image index $($IMAGE.ImageIndex)"
@@ -428,10 +507,15 @@ try {
     #
 
     # Add Setup DU by copy the files from the package into the newMedia
-    Write-Output "$(Get-TS): Adding package $SETUP_DU_PATH"
-    cmd.exe /c $env:SystemRoot\System32\expand.exe $SETUP_DU_PATH -F:* $MEDIA_NEW_PATH"\sources" 
-    if ($LastExitCode -ne 0) {
-        throw "Error: Failed to expand $SETUP_DU_PATH. Exit code: $LastExitCode"
+    if ($SETUP_DU_PATH) {
+        Write-Output "$(Get-TS): Adding package $SETUP_DU_PATH"
+        cmd.exe /c $env:SystemRoot\System32\expand.exe $SETUP_DU_PATH -F:* $MEDIA_NEW_PATH"\sources" 
+        if ($LastExitCode -ne 0) {
+            throw "Error: Failed to expand $SETUP_DU_PATH. Exit code: $LastExitCode"
+        }
+    }
+    else {
+        Write-Warning "$(Get-TS): Skipping Setup Dynamic Update expansion step (no .cab found in packages\Other\SetupDynamic)"
     }
 
     # Copy setup.exe from boot.wim, saved earlier.
