@@ -45,6 +45,7 @@ Remove-Item .\packages.config
 
 # Enable-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V-Management-PowerShell -Online -All
 
+# Create a VHD for backup, and a scheduled task to mount it on boot
 $vhdPath = "C:\Drives\DevDriveBackup.vhd"
 
 New-VHD -Path $vhdPath -Dynamic -SizeBytes 400000000000 |

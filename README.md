@@ -13,6 +13,10 @@ Many of these scripts were originally located in <https://gist.github.com/flcdrg
 - [post-install-nonadmin.ps1](post-install-nonadmin.ps1) - Things to run after Windows installation (run with non-elevated permissions)
 - [Set-Touchpad.ps1](Set-Touchpad.ps1) - Disable single tap to click with Touchpad
 
+## Package caches
+
+<https://learn.microsoft.com/en-us/windows/dev-drive/#storing-package-cache-on-dev-drive>
+
 ## Firefox
 
 [prefs.js](prefs.js)
