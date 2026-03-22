@@ -14,6 +14,10 @@ if (-not (Test-Path $PROFILE)) {
 
 iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
+if (Test-Path 'd:\choco-cache') {
+    choco config set --name="'cacheLocation'" --value="'d:\packages\choco-cache'"
+}
+
 choco feature enable -n=allowGlobalConfirmation
 choco feature enable -n=useRememberedArgumentsForUpgrades
 
@@ -46,12 +50,29 @@ $cred=Get-Credential domain\username
 Install-BoxstarterPackage -Credential $cred -PackageName https://gist.githubusercontent.com/flcdrg/87802af4c92527eb8a30/raw/1-boxstarter-bare-v4.ps1
 #>
 
+# This will install NuGet module if missing
+Get-PackageProvider -Name NuGet -ForceBootstrap
+
+# PowerShellGet. Do this early as reboots are required
+if (-not (Get-InstalledModule -Name PowerShellGet -ErrorAction SilentlyContinue)) {
+    Write-Host "Install-Module PowerShellGet"
+    Install-Module -Name "PowerShellGet" -AllowClobber -Force -Scope AllUsers
+
+    # Exit equivalent
+    Invoke-Reboot
+}
+
+# Write-Host "Set-PSRepository"
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+Install-Module Microsoft.PowerShell.PSResourceGet -Repository PSGallery -Scope AllUsers
+Set-PSResourceRepository PSGallery -Trusted
+
 # Some things are now installed/configured via Windows Image autounattend.xml now
 
 Write-Host "Installing packages"
 
 # Disable VirusTotal checking (as we seem to hit a threshold otherwise)
-#choco feature disable --name=virusCheck
+choco feature disable --name=virusCheck
 
 Write-Host "Temp: $($env:temp)"
 
@@ -61,7 +82,7 @@ choco pin add -n=firefox
 choco install 7zip
 choco install audacity
 choco install azure-cli
-choco install azure-functions-core-tools --params "'/x64'" --svc
+choco install azure-functions-core-tools --params "'/x64'"
 choco install becyicongrabber
 choco install bind-toolsonly
 choco install cascadia-code-nerd-font
@@ -79,8 +100,13 @@ choco install dotnet-9.0-sdk
 choco install echoargs
 choco install ffmpeg
 
-choco install fnm # Use this instead of nvm (partly because of https://github.com/coreybutler/nvm-windows/issues/1068). Node installs can be done non-elevated
-
+choco install fnm # Use this instead of nvm (partly because of https://github.com/coreybutler/nvm-windows/issues/1068)
+if (-not(Get-Command node -ErrorAction Ignore)) {
+    fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
+    
+    fnm install --lts
+    fnm use lts-latest
+}
 
 choco install gh
 choco install git
@@ -97,6 +123,9 @@ choco install microsoftazurestorageexplorer
 
 choco install msbuild-structured-log-viewer
 choco pin add -n=msbuild-structured-log-viewer
+
+choco install nerd-fonts-CascadiaCode
+choco install nerd-fonts-FiraCode
 
 winget install "NuGet Package Explorer" --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
 
@@ -115,9 +144,6 @@ choco install PDFXchangeEditor  --params '"/NoDesktopShortcuts /NoUpdater"'
 # choco install python2  # Required by some NPM/Node packages (eg node-sass)
 choco install powertoys # included mousewithout borders and zoomit
 choco install oscar-cpap-analysis
-
-# This will conflict with earlier font packages, so make sure it happens after a reboot
-choco install FiraCode  # font
 
 choco install pingplotter
 choco install pnpm
@@ -157,10 +183,10 @@ choco install sql-server-management-studio --svc
 # Visual Studio 2022 (Ignore virus scanning as sometimes the catalog file it downloads hasn't been scanned)
 # could add --passive package parameter if you want to see the installer UI for progress
 # don't install Microsoft.VisualStudio.Component.Azure.Powershell as that's the old AzureRM PowerShell bits
-choco install visualstudio2022enterprise --svc --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell --path cache=D:\VS\Cache'"
-choco pin add -n="visualstudio2022enterprise"
-# choco install visualstudio2022enterprise-preview --pre --svc --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
-# choco pin add -n="visualstudio2022enterprise-preview"
+# choco install visualstudio2022enterprise --svc --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
+# choco pin add -n="visualstudio2022enterprise"
+choco install visualstudio2026enterprise-preview --pre --svc --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
+choco pin add -n="visualstudio2026enterprise-preview"
 
 # After Visual Studio
 choco install dotUltimate --svc  --params "'/NoCpp /NoTeamCityAddin'"
@@ -175,13 +201,37 @@ choco install docker-desktop
 Update-ExecutionPolicy RemoteSigned
 Set-WindowsExplorerOptions -EnableShowFileExtensions -EnableExpandToOpenFolder
 
+# Don't install any Azure CLI extension in Boxstarter, as they will be installed with admin permissions in the user's profile (and then fail to work as a regular user)
+# az extension add --name azure-devops
+
+# Remove pre-installed Pester Module
+if (Test-Path "C:\Program Files\WindowsPowerShell\Modules\Pester\3.4.0" ) {
+    $module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
+    takeown /F $module /A /R
+    icacls $module /reset
+    icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
+    Remove-Item -Path $module -Recurse -Force -Confirm:$false
+}
+
+$psmodules = @(Get-PSResource -Scope AllUsers | Select-Object -ExpandProperty Name)
+
+$modulesToInstall = "Terminal-Icons", "posh-git", "PolicyFileEditor", "Pester"
+
+$modulesToInstall | Foreach-Object {
+    if ($psmodules -notcontains $_) {
+        Write-Host "Installing $_"
+        Install-PSResource -Name $_ -Scope AllUsers
+    }
+}
+
+if ( -not (wsl --status)) {
+    wsl --install -d Ubuntu-24.04 --no-launch
+}
+
 # Avoid clash with builtin function
 Boxstarter.WinConfig\Install-WindowsUpdate -getUpdatesFromMS -acceptEula
-
-# Enable updates from other Microsoft products
-Set-ItemProperty -Path hklm:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -Value 1 -Type DWord
 
 Enable-UAC
 
 # Restore VirusTotal
-#choco feature enable --name=virusCheck
+choco feature enable --name=virusCheck
