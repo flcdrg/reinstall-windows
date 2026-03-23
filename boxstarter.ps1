@@ -137,7 +137,8 @@ choco pin add -n=msbuild-structured-log-viewer
 choco install nerd-fonts-CascadiaCode
 choco install nerd-fonts-FiraCode
 
-winget install "NuGet Package Explorer" --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
+# For some reason winget may not be in the path yet
+& "$env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\winget.exe" install "NuGet Package Explorer" --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
 
 choco install office365business  --params='/exclude:"Access Groove Lync OneDrive Outlook Publisher"'
 choco pin add -n=office365business
