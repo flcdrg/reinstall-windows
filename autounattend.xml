@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+	<!--https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=en-US&Locale=en-AU&Keyboard=00000409&GeoLocation=12&ProcessorArchitecture=amd64&ComputerNameMode=Custom&ComputerName=Delphinium&CompactOsMode=Default&TimeZoneMode=Explicit&TimeZone=Cen.+Australia+Standard+Time&PartitionMode=Custom&DiskpartScript=SELECT+DISK%3D0%0D%0ASELECT+PARTITION%3D3%0D%0AFORMAT+QUICK+FS%3DNTFS+LABEL%3D%22Windows%22+OVERRIDE%0D%0A&InstallToMode=Custom&InstallToDisk=0&InstallToPartition=3&DiskAssertionMode=Script&DiskAssertionScript=On+Error+Resume+Next%0D%0ASet+wmi+%3D+GetObject%28%22winmgmts%3A%5C%5C.%5Croot%5Ccimv2%22%29%0D%0ASet+drive+%3D+wmi.Get%28%22Win32_DiskDrive.DeviceID%3D%27%5C%5C.%5CPHYSICALDRIVE0%27%22%29%0D%0AIf+Err.Number+%3C%3E+0+Then%0D%0A++++Msgbox+Err.Description%0D%0A++++WScript.Quit+1%0D%0AEnd+If%0D%0AIf+drive.InterfaceType+%3D+%22IDE%22+Or+drive.InterfaceType+%3D+%22SCSI%22+Then%0D%0A++++WScript.Quit+0%0D%0AElse%0D%0A++++MsgBox+%22Assertion+failed.%22%0D%0A++++WScript.Quit+1%0D%0AEnd+If&WindowsEditionMode=Generic&WindowsEdition=pro&InstallFromMode=Automatic&PEMode=Default&UserAccountMode=Interactive&PasswordExpirationMode=Unlimited&LockoutMode=Default&HideFiles=Hidden&ShowFileExtensions=true&ShowEndTask=true&TaskbarSearch=Hide&TaskbarIconsMode=Custom&TaskbarIconsXml=%3CLayoutModificationTemplate+xmlns%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FLayoutModification%22+xmlns%3Adefaultlayout%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FFullDefaultLayout%22+xmlns%3Astart%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FStartLayout%22+xmlns%3Ataskbar%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FTaskbarLayout%22+Version%3D%221%22%3E%0D%0A++%3CCustomTaskbarLayoutCollection+PinListPlacement%3D%22Replace%22%3E%0D%0A++++%3Cdefaultlayout%3ATaskbarLayout%3E%0D%0A++++++%3Ctaskbar%3ATaskbarPinList%3E%0D%0A++++++++%3Ctaskbar%3ADesktopApp+DesktopApplicationID%3D%22Microsoft.Windows.Explorer%22+%2F%3E%0D%0A++++++++%3Ctaskbar%3AUWA+AppUserModelID%3D%22Microsoft.WindowsTerminal_8wekyb3d8bbwe%21App%22+%2F%3E++++++++%0D%0A++++++%3C%2Ftaskbar%3ATaskbarPinList%3E%0D%0A++++%3C%2Fdefaultlayout%3ATaskbarLayout%3E%0D%0A++%3C%2FCustomTaskbarLayoutCollection%3E%0D%0A%3C%2FLayoutModificationTemplate%3E&DisableWidgets=true&HideTaskViewButton=true&DisableBingResults=true&StartTilesMode=Default&StartPinsMode=Empty&EnableLongPaths=true&AllowPowerShellScripts=true&DisableAppSuggestions=true&HideEdgeFre=true&DisableEdgeStartupBoost=true&DeleteWindowsOld=true&EffectsMode=Default&DeleteEdgeDesktopIcon=true&DesktopIconsMode=Default&StartFoldersMode=Default&WifiMode=Interactive&ExpressSettings=DisableAll&LockKeysMode=Skip&StickyKeysMode=Disabled&ColorMode=Default&WallpaperMode=Default&LockScreenMode=Default&Remove3DViewer=true&RemoveBingSearch=true&RemoveCopilot=true&RemoveCortana=true&RemoveFamily=true&RemoveGameAssist=true&RemoveGetHelp=true&RemoveHandwriting=true&RemoveMailCalendar=true&RemoveMaps=true&RemoveMathInputPanel=true&RemoveMixedReality=true&RemoveZuneVideo=true&RemoveNews=true&RemoveOffice365=true&RemoveOutlook=true&RemovePaint=true&RemovePaint3D=true&RemovePeople=true&RemovePowerAutomate=true&RemovePowerShellISE=true&RemoveQuickAssist=true&RemoveSkype=true&RemoveSolitaire=true&RemoveSpeech=true&RemoveStickyNotes=true&RemoveTeams=true&RemoveGetStarted=true&RemoveToDo=true&RemoveVoiceRecorder=true&RemoveWallet=true&RemoveWeather=true&RemoveFaxAndScan=true&RemoveWindowsMediaPlayer=true&RemoveZuneMusic=true&RemoveWordPad=true&RemoveXboxApps=true&RemoveYourPhone=true&FirstLogonScript0=Write-Output+%22Install+Chocolatey%22%0D%0ASet-ExecutionPolicy+Bypass+-Scope+Process+-Force%3B+%5BSystem.Net.ServicePointManager%5D%3A%3ASecurityProtocol+%3D+%5BSystem.Net.ServicePointManager%5D%3A%3ASecurityProtocol+-bor+3072%3B+iex+%28%28New-Object+System.Net.WebClient%29.DownloadString%28%27https%3A%2F%2Fcommunity.chocolatey.org%2Finstall.ps1%27%29%29%0D%0A%0D%0AWrite-Host+%22Configure+PowerShellGet%22%0D%0AGet-PackageProvider+-Name+NuGet+-ForceBootstrap%0D%0AInstall-Module+-Name+%22PowerShellGet%22+-AllowClobber+-Force+-Scope+AllUsers%0D%0A&FirstLogonScriptType0=Ps1&FirstLogonScript1=Write-Output+%22Configure+PSResourceGet%22%0D%0ASet-PSRepository+-Name+PSGallery+-InstallationPolicy+Trusted%0D%0AInstall-Module+Microsoft.PowerShell.PSResourceGet+-Repository+PSGallery+-Scope+AllUsers%0D%0ASet-PSResourceRepository+PSGallery+-Trusted&FirstLogonScriptType1=Ps1&FirstLogonScript2=Write-Output+%22Remove+old+Pester%22%0D%0A%24module+%3D+%22C%3A%5CProgram+Files%5CWindowsPowerShell%5CModules%5CPester%22%0D%0Atakeown+%2FF+%24module+%2FA+%2FR%0D%0Aicacls+%24module+%2Freset%0D%0Aicacls+%24module+%2Fgrant+%22*S-1-5-32-544%3AF%22+%2Finheritance%3Ad+%2FT%0D%0ARemove-Item+-Path+%24module+-Recurse+-Force+-Confirm%3A%24false%0D%0A%0D%0AWrite-Output+%22Install+PowerShell+modules%22%0D%0AInstall-Module+-Scope+AllUsers+posh-git%0D%0AInstall-Module+-Scope+AllUsers+Terminal-Icons%0D%0AInstall-module+-scope+allusers+Az%0D%0AInstall-Module+-Scope+AllUsers+-Name+Pester+-Force%0D%0A&FirstLogonScriptType2=Ps1&FirstLogonScript3=Write-Output+%22Install+WSL%22%0D%0Awsl+%2D%2Dinstall&FirstLogonScriptType3=Ps1&FirstLogonScript4=Write-Output+%22Configure+Chocolatey%22%0D%0Achoco+feature+enable+-n%3DallowGlobalConfirmation%0D%0Achoco+feature+enable+-n%3DuseRememberedArgumentsForUpgrades%0D%0Achoco+config+set+%2D%2Dname%3D%22%27defaultPushSource%27%22+%2D%2Dvalue%3D%22%27https%3A%2F%2Fpush.chocolatey.org%2F%27%22&FirstLogonScriptType4=Ps1&FirstLogonScript5=fsutil+devdrv+trust+D%3A&FirstLogonScriptType5=Cmd&FirstLogonScript6=reg.exe+add+%22HKLM%5CSoftware%5CPolicies%5CMicrosoft%5CWindows%5CCloudContent%22+%2Fv+%22DisableCloudOptimizedContent%22+%2Ft+REG_DWORD+%2Fd+1+%2Ff&FirstLogonScriptType6=Ps1&UserOnceScript0=%23+This+script+is+embedded+in+the+autounattend.xml+as+part+of+the+UserOnce+script.%0D%0A%23+Things+to+install%2Frun+as+the+signed-in+user%2C+but+not+elevated%0D%0A%0D%0A%23+Install+Azure+Artifacts+credential+provider%0D%0AInvoke-Expression+%22%26+%7B+%24%28Invoke-RestMethod+https%3A%2F%2Faka.ms%2Finstall-artifacts-credprovider.ps1%29+%7D+-AddNetfx%22%0D%0A%0D%0A%23+Use+DevDrive+for+package+caches+-+https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows%2Fdev-drive%2F%23storing-package-cache-on-dev-drive%0D%0A%23+NuGet+global+package+cache+-+https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fnuget%2Fconsume-packages%2Fmanaging-the-global-packages-and-cache-folders%3FWT.mc_id%3DDOP-MVP-5001655%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22NUGET_PACKAGES%22%2C+%22d%3A%5Cpackages%5Cnuget%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+pnpm+global+store+-+https%3A%2F%2Fpnpm.io%2Fcli%2Fstore%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22PNPM_HOME%22%2C+%22D%3A%5Cpackages%5Cpnpm-store%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Add+pnpm+global+store+to+path+%28to+support+global+packages%29%0D%0A.%2FSet-PathVariable.ps1+-NewLocation+%22D%3A%5Cpackages%5Cpnpm-store%5C%22%0D%0A%0D%0A%23+NPM+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22npm_config_cache%22%2C+%22D%3A%5Cpackages%5Cnpm-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+VCPkg+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22VCPKG_DEFAULT_BINARY_CACHE%22%2C+%22D%3A%5Cpackages%5Cvcpkg-downloads%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Python+PIP+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22PIP_CACHE_DIR%22%2C+%22D%3A%5Cpackages%5Cpip-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Python+UV+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22UV_CACHE_DIR%22%2C+%22D%3A%5Cpackages%5Cuv-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Rust+Cargo+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22CARGO_HOME%22%2C+%22D%3A%5Cpackages%5Ccargo%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Maven+local+repository%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22MAVEN_OPTS%22%2C+%22-Dmaven.repo.local%3DD%3A%5Cpackages%5Cmaven%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Gradle+%28Java%29%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22GRADLE_USER_HOME%22%2C+%22d%3A%5Cpackages%5C.gradle%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Symbols%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22_NT_SYMBOL_PATH%22%2C+%22srv*d%3A%5Cpackages%5Csymbols*https%3A%2F%2Fmsdl.microsoft.com%2Fdownload%2Fsymbols%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Tell+Corepack+not+to+automatically+add+packageManager+to+package.json+files+%28https%3A%2F%2Fblog.hyperknot.com%2Fp%2Fcorepacks-packagemanager-field%29%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22COREPACK_ENABLE_AUTO_PIN%22%2C+%220%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Enable+Clipboard+History%0D%0ASet-ItemProperty+-Path+%22HKCU%3A%5CSoftware%5CMicrosoft%5CClipboard%22+-Name+%22EnableClipboardHistory%22+-Type+DWord+-Value+1+-Force%0D%0A%0D%0A&UserOnceScriptType0=Ps1&WdacMode=Skip&AppLockerMode=Skip-->
+	<settings pass="offlineServicing"></settings>
+	<settings pass="windowsPE">
+		<component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<UILanguage>en-US</UILanguage>
+		</component>
+		<component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<ImageInstall>
+				<OSImage>
+					<InstallTo>
+						<DiskID>0</DiskID>
+						<PartitionID>3</PartitionID>
+					</InstallTo>
+				</OSImage>
+			</ImageInstall>
+			<UserData>
+				<ProductKey>
+					<Key>VK7JG-NPHTM-C97JM-9MPGT-3V66T</Key>
+					<WillShowUI>OnError</WillShowUI>
+				</ProductKey>
+				<AcceptEula>true</AcceptEula>
+			</UserData>
+			<UseConfigurationSet>false</UseConfigurationSet>
+			<RunSynchronous>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>1</Order>
+					<Path>cmd.exe /c &gt;&gt;X:\assert.vbs (echo:On Error Resume Next&amp;echo:Set wmi = GetObject(^"winmgmts:\\.\root\cimv2^"^)&amp;echo:Set drive = wmi.Get(^"Win32_DiskDrive.DeviceID='\\.\PHYSICALDRIVE0'^"^)&amp;echo:If Err.Number ^&lt;^&gt; 0 Then&amp;echo:Msgbox Err.Description)</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>2</Order>
+					<Path>cmd.exe /c &gt;&gt;X:\assert.vbs (echo:WScript.Quit 1&amp;echo:End If&amp;echo:If drive.InterfaceType = ^"IDE^" Or drive.InterfaceType = ^"SCSI^" Then&amp;echo:WScript.Quit 0&amp;echo:Else&amp;echo:MsgBox ^"Assertion failed.^"&amp;echo:WScript.Quit 1&amp;echo:End If)</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>3</Order>
+					<Path>cscript.exe //E:vbscript "X:\assert.vbs"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>4</Order>
+					<Path>cmd.exe /c &gt;&gt;X:\diskpart.txt (echo:SELECT DISK=0&amp;echo:SELECT PARTITION=3&amp;echo:FORMAT QUICK FS=NTFS LABEL=^"Windows^" OVERRIDE)</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>5</Order>
+					<Path>cmd.exe /c "diskpart.exe /s "X:\diskpart.txt" &gt;&gt;"X:\diskpart.log" || ( type "X:\diskpart.log" &amp; echo diskpart encountered an error. &amp; pause &amp; exit /b 1 )"</Path>
+				</RunSynchronousCommand>
+			</RunSynchronous>
+		</component>
+	</settings>
+	<settings pass="generalize"></settings>
+	<settings pass="specialize">
+		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<ComputerName>Delphinium</ComputerName>
+			<TimeZone>Cen. Australia Standard Time</TimeZone>
+		</component>
+		<component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<RunSynchronous>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>1</Order>
+					<Path>powershell.exe -WindowStyle "Normal" -NoProfile -Command "$xml = [xml]::new(); $xml.Load('C:\Windows\Panther\unattend.xml'); $sb = [scriptblock]::Create( $xml.unattend.Extensions.ExtractScript ); Invoke-Command -ScriptBlock $sb -ArgumentList $xml;"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>2</Order>
+					<Path>powershell.exe -WindowStyle "Normal" -ExecutionPolicy "Unrestricted" -NoProfile -File "C:\Windows\Setup\Scripts\Specialize.ps1"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>3</Order>
+					<Path>reg.exe load "HKU\DefaultUser" "C:\Users\Default\NTUSER.DAT"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>4</Order>
+					<Path>powershell.exe -WindowStyle "Normal" -ExecutionPolicy "Unrestricted" -NoProfile -File "C:\Windows\Setup\Scripts\DefaultUser.ps1"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>5</Order>
+					<Path>reg.exe unload "HKU\DefaultUser"</Path>
+				</RunSynchronousCommand>
+			</RunSynchronous>
+		</component>
+	</settings>
+	<settings pass="auditSystem"></settings>
+	<settings pass="auditUser"></settings>
+	<settings pass="oobeSystem">
+		<component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<InputLocale>0c09:00000409</InputLocale>
+			<SystemLocale>en-AU</SystemLocale>
+			<UILanguage>en-US</UILanguage>
+			<UserLocale>en-AU</UserLocale>
+		</component>
+		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<OOBE>
+				<ProtectYourPC>3</ProtectYourPC>
+				<HideEULAPage>true</HideEULAPage>
+				<HideWirelessSetupInOOBE>false</HideWirelessSetupInOOBE>
+				<HideOnlineAccountScreens>false</HideOnlineAccountScreens>
+			</OOBE>
+			<FirstLogonCommands>
+				<SynchronousCommand wcm:action="add">
+					<Order>1</Order>
+					<CommandLine>powershell.exe -WindowStyle "Normal" -ExecutionPolicy "Unrestricted" -NoProfile -File "C:\Windows\Setup\Scripts\FirstLogon.ps1"</CommandLine>
+				</SynchronousCommand>
+			</FirstLogonCommands>
+		</component>
+	</settings>
+	<Extensions xmlns="https://schneegans.de/windows/unattend-generator/">
+		<ExtractScript>
+param(
+    [xml] $Document
+);
+
+foreach( $file in $Document.unattend.Extensions.File ) {
+    $path = [System.Environment]::ExpandEnvironmentVariables( $file.GetAttribute( 'path' ) );
+    mkdir -Path( $path | Split-Path -Parent ) -ErrorAction 'SilentlyContinue';
+    $encoding = switch( [System.IO.Path]::GetExtension( $path ) ) {
+        { $_ -in '.ps1', '.xml' } { [System.Text.Encoding]::UTF8; }
+        { $_ -in '.reg', '.vbs', '.js' } { [System.Text.UnicodeEncoding]::new( $false, $true ); }
+        default { [System.Text.Encoding]::Default; }
+    };
+    $bytes = $encoding.GetPreamble() + $encoding.GetBytes( $file.InnerText.Trim() );
+    [System.IO.File]::WriteAllBytes( $path, $bytes );
+}
+		</ExtractScript>
+		<File path="C:\Windows\Setup\Scripts\RemovePackages.ps1">
+$selectors = @(
+	'Microsoft.Microsoft3DViewer';
+	'Microsoft.BingSearch';
+	'Microsoft.Copilot';
+	'Microsoft.549981C3F5F10';
+	'MicrosoftCorporationII.MicrosoftFamily';
+	'Microsoft.Edge.GameAssist';
+	'Microsoft.GetHelp';
+	'Microsoft.Getstarted';
+	'microsoft.windowscommunicationsapps';
+	'Microsoft.WindowsMaps';
+	'Microsoft.MixedReality.Portal';
+	'Microsoft.BingNews';
+	'Microsoft.MicrosoftOfficeHub';
+	'Microsoft.OutlookForWindows';
+	'Microsoft.Paint';
+	'Microsoft.MSPaint';
+	'Microsoft.People';
+	'Microsoft.PowerAutomateDesktop';
+	'MicrosoftCorporationII.QuickAssist';
+	'Microsoft.SkypeApp';
+	'Microsoft.MicrosoftSolitaireCollection';
+	'Microsoft.MicrosoftStickyNotes';
+	'MicrosoftTeams';
+	'MSTeams';
+	'Microsoft.Todos';
+	'Microsoft.WindowsSoundRecorder';
+	'Microsoft.Wallet';
+	'Microsoft.BingWeather';
+	'Microsoft.Xbox.TCUI';
+	'Microsoft.XboxApp';
+	'Microsoft.XboxGameOverlay';
+	'Microsoft.XboxGamingOverlay';
+	'Microsoft.XboxIdentityProvider';
+	'Microsoft.XboxSpeechToTextOverlay';
+	'Microsoft.GamingApp';
+	'Microsoft.YourPhone';
+	'Microsoft.ZuneMusic';
+	'Microsoft.ZuneVideo';
+);
+$getCommand = {
+  Get-AppxProvisionedPackage -Online;
+};
+$filterCommand = {
+  $_.DisplayName -eq $selector;
+};
+$removeCommand = {
+  [CmdletBinding()]
+  param(
+    [Parameter( Mandatory, ValueFromPipeline )]
+    $InputObject
+  );
+  process {
+    $InputObject | Remove-AppxProvisionedPackage -AllUsers -Online -ErrorAction 'Continue';
+  }
+};
+$type = 'Package';
+$logfile = 'C:\Windows\Setup\Scripts\RemovePackages.log';
+&amp; {
+	$installed = &amp; $getCommand;
+	foreach( $selector in $selectors ) {
+		$result = [ordered] @{
+			Selector = $selector;
+		};
+		$found = $installed | Where-Object -FilterScript $filterCommand;
+		if( $found ) {
+			$result.Output = $found | &amp; $removeCommand;
+			if( $? ) {
+				$result.Message = "$type removed.";
+			} else {
+				$result.Message = "$type not removed.";
+				$result.Error = $Error[0];
+			}
+		} else {
+			$result.Message = "$type not installed.";
+		}
+		$result | ConvertTo-Json -Depth 3 -Compress;
+	}
+} *&gt;&amp;1 | Out-String -Width 1KB -Stream &gt;&gt; $logfile;
+		</File>
+		<File path="C:\Windows\Setup\Scripts\RemoveCapabilities.ps1">
+$selectors = @(
+	'Print.Fax.Scan';
+	'Language.Handwriting';
+	'MathRecognizer';
+	'Microsoft.Windows.MSPaint';
+	'Microsoft.Windows.PowerShell.ISE';
+	'App.Support.QuickAssist';
+	'Language.Speech';
+	'Language.TextToSpeech';
+	'Media.WindowsMediaPlayer';
+	'Microsoft.Windows.WordPad';
+);
+$getCommand = {
+  Get-WindowsCapability -Online | Where-Object -Property 'State' -NotIn -Value @(
+    'NotPresent';
+    'Removed';
+  );
+};
+$filterCommand = {
+  ($_.Name -split '~')[0] -eq $selector;
+};
+$removeCommand = {
+  [CmdletBinding()]
+  param(
+    [Parameter( Mandatory, ValueFromPipeline )]
+    $InputObject
+  );
+  process {
+    $InputObject | Remove-WindowsCapability -Online -ErrorAction 'Continue';
+  }
+};
+$type = 'Capability';
+$logfile = 'C:\Windows\Setup\Scripts\RemoveCapabilities.log';
+&amp; {
+	$installed = &amp; $getCommand;
+	foreach( $selector in $selectors ) {
+		$result = [ordered] @{
+			Selector = $selector;
+		};
+		$found = $installed | Where-Object -FilterScript $filterCommand;
+		if( $found ) {
+			$result.Output = $found | &amp; $removeCommand;
+			if( $? ) {
+				$result.Message = "$type removed.";
+			} else {
+				$result.Message = "$type not removed.";
+				$result.Error = $Error[0];
+			}
+		} else {
+			$result.Message = "$type not installed.";
+		}
+		$result | ConvertTo-Json -Depth 3 -Compress;
+	}
+} *&gt;&amp;1 | Out-String -Width 1KB -Stream &gt;&gt; $logfile;
+		</File>
+		<File path="C:\Windows\Setup\Scripts\TaskbarLayoutModification.xml">
+&lt;LayoutModificationTemplate xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification" xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" xmlns:start="http://schemas.microsoft.com/Start/2014/StartLayout" xmlns:taskbar="http://schemas.microsoft.com/Start/2014/TaskbarLayout" Version="1"&gt;
+	&lt;CustomTaskbarLayoutCollection PinListPlacement="Replace"&gt;
+		&lt;defaultlayout:TaskbarLayout&gt;
+			&lt;taskbar:TaskbarPinList&gt;
+				&lt;taskbar:DesktopApp DesktopApplicationID="Microsoft.Windows.Explorer" /&gt;
+				&lt;taskbar:UWA AppUserModelID="Microsoft.WindowsTerminal_8wekyb3d8bbwe!App" /&gt;
+			&lt;/taskbar:TaskbarPinList&gt;
+		&lt;/defaultlayout:TaskbarLayout&gt;
+	&lt;/CustomTaskbarLayoutCollection&gt;
+&lt;/LayoutModificationTemplate&gt;
+		</File>
+		<File path="C:\Windows\Setup\Scripts\UnlockStartLayout.vbs">
+HKU = &amp;H80000003
+Set reg = GetObject("winmgmts://./root/default:StdRegProv")
+Set fso = CreateObject("Scripting.FileSystemObject")
+
+If reg.EnumKey(HKU, "", sids) = 0 Then
+	If Not IsNull(sids) Then
+		For Each sid In sids
+			key = sid + "\Software\Policies\Microsoft\Windows\Explorer"
+			name = "LockedStartLayout"
+			If reg.GetDWORDValue(HKU, key, name, existing) = 0 Then
+				reg.SetDWORDValue HKU, key, name, 0
+			End If
+		Next
+	End If
+End If
+		</File>
+		<File path="C:\Windows\Setup\Scripts\UnlockStartLayout.xml">
+&lt;Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task"&gt;
+	&lt;Triggers&gt;
+		&lt;EventTrigger&gt;
+			&lt;Enabled&gt;true&lt;/Enabled&gt;
+			&lt;Subscription&gt;&amp;lt;QueryList&amp;gt;&amp;lt;Query Id="0" Path="Application"&amp;gt;&amp;lt;Select Path="Application"&amp;gt;*[System[Provider[@Name='UnattendGenerator'] and EventID=1]]&amp;lt;/Select&amp;gt;&amp;lt;/Query&amp;gt;&amp;lt;/QueryList&amp;gt;&lt;/Subscription&gt;
+		&lt;/EventTrigger&gt;
+	&lt;/Triggers&gt;
+	&lt;Principals&gt;
+		&lt;Principal id="Author"&gt;
+			&lt;UserId&gt;S-1-5-18&lt;/UserId&gt;
+			&lt;RunLevel&gt;LeastPrivilege&lt;/RunLevel&gt;
+		&lt;/Principal&gt;
+	&lt;/Principals&gt;
+	&lt;Settings&gt;
+		&lt;MultipleInstancesPolicy&gt;IgnoreNew&lt;/MultipleInstancesPolicy&gt;
+		&lt;DisallowStartIfOnBatteries&gt;false&lt;/DisallowStartIfOnBatteries&gt;
+		&lt;StopIfGoingOnBatteries&gt;false&lt;/StopIfGoingOnBatteries&gt;
+		&lt;AllowHardTerminate&gt;true&lt;/AllowHardTerminate&gt;
+		&lt;StartWhenAvailable&gt;false&lt;/StartWhenAvailable&gt;
+		&lt;RunOnlyIfNetworkAvailable&gt;false&lt;/RunOnlyIfNetworkAvailable&gt;
+		&lt;IdleSettings&gt;
+			&lt;StopOnIdleEnd&gt;true&lt;/StopOnIdleEnd&gt;
+			&lt;RestartOnIdle&gt;false&lt;/RestartOnIdle&gt;
+		&lt;/IdleSettings&gt;
+		&lt;AllowStartOnDemand&gt;true&lt;/AllowStartOnDemand&gt;
+		&lt;Enabled&gt;true&lt;/Enabled&gt;
+		&lt;Hidden&gt;false&lt;/Hidden&gt;
+		&lt;RunOnlyIfIdle&gt;false&lt;/RunOnlyIfIdle&gt;
+		&lt;WakeToRun&gt;false&lt;/WakeToRun&gt;
+		&lt;ExecutionTimeLimit&gt;PT72H&lt;/ExecutionTimeLimit&gt;
+		&lt;Priority&gt;7&lt;/Priority&gt;
+	&lt;/Settings&gt;
+	&lt;Actions Context="Author"&gt;
+		&lt;Exec&gt;
+			&lt;Command&gt;C:\Windows\System32\wscript.exe&lt;/Command&gt;
+			&lt;Arguments&gt;C:\Windows\Setup\Scripts\UnlockStartLayout.vbs&lt;/Arguments&gt;
+		&lt;/Exec&gt;
+	&lt;/Actions&gt;
+&lt;/Task&gt;
+		</File>
+		<File path="C:\Windows\Setup\Scripts\SetStartPins.ps1">
+$json = '{"pinnedList":[]}';
+if( [System.Environment]::OSVersion.Version.Build -lt 20000 ) {
+	return;
+}
+$key = 'Registry::HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start';
+New-Item -Path $key -ItemType 'Directory' -ErrorAction 'SilentlyContinue';
+Set-ItemProperty -LiteralPath $key -Name 'ConfigureStartPins' -Value $json -Type 'String';
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-01.ps1">
+Write-Output "Install Chocolatey"
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+Write-Host "Configure PowerShellGet"
+Get-PackageProvider -Name NuGet -ForceBootstrap
+Install-Module -Name "PowerShellGet" -AllowClobber -Force -Scope AllUsers
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-02.ps1">
+Write-Output "Configure PSResourceGet"
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+Install-Module Microsoft.PowerShell.PSResourceGet -Repository PSGallery -Scope AllUsers
+Set-PSResourceRepository PSGallery -Trusted
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-03.ps1">
+Write-Output "Remove old Pester"
+$module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
+takeown /F $module /A /R
+icacls $module /reset
+icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
+Remove-Item -Path $module -Recurse -Force -Confirm:$false
+
+Write-Output "Install PowerShell modules"
+Install-Module -Scope AllUsers posh-git
+Install-Module -Scope AllUsers Terminal-Icons
+Install-module -scope allusers Az
+Install-Module -Scope AllUsers -Name Pester -Force
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-04.ps1">
+Write-Output "Install WSL"
+wsl --install
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-05.ps1">
+Write-Output "Configure Chocolatey"
+choco feature enable -n=allowGlobalConfirmation
+choco feature enable -n=useRememberedArgumentsForUpgrades
+choco config set --name="'defaultPushSource'" --value="'https://push.chocolatey.org/'"
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-06.cmd">
+fsutil devdrv trust D:
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-07.ps1">
+reg.exe add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableCloudOptimizedContent" /t REG_DWORD /d 1 /f
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-08.ps1">
+# This script is embedded in the autounattend.xml as part of the UserOnce script.
+# Things to install/run as the signed-in user, but not elevated
+
+# Install Azure Artifacts credential provider
+Invoke-Expression "&amp; { $(Invoke-RestMethod https://aka.ms/install-artifacts-credprovider.ps1) } -AddNetfx"
+
+# Use DevDrive for package caches - https://learn.microsoft.com/en-us/windows/dev-drive/#storing-package-cache-on-dev-drive
+# NuGet global package cache - https://learn.microsoft.com/en-us/nuget/consume-packages/managing-the-global-packages-and-cache-folders?WT.mc_id=DOP-MVP-5001655
+[Environment]::SetEnvironmentVariable("NUGET_PACKAGES", "d:\packages\nuget", [System.EnvironmentVariableTarget]::User)
+
+# pnpm global store - https://pnpm.io/cli/store
+[Environment]::SetEnvironmentVariable("PNPM_HOME", "D:\packages\pnpm-store\", [System.EnvironmentVariableTarget]::User)
+
+# Add pnpm global store to path (to support global packages)
+./Set-PathVariable.ps1 -NewLocation "D:\packages\pnpm-store\"
+
+# NPM cache
+[Environment]::SetEnvironmentVariable("npm_config_cache", "D:\packages\npm-cache\", [System.EnvironmentVariableTarget]::User)
+
+# VCPkg cache
+[Environment]::SetEnvironmentVariable("VCPKG_DEFAULT_BINARY_CACHE", "D:\packages\vcpkg-downloads\", [System.EnvironmentVariableTarget]::User)
+
+# Python PIP cache
+[Environment]::SetEnvironmentVariable("PIP_CACHE_DIR", "D:\packages\pip-cache\", [System.EnvironmentVariableTarget]::User)
+
+# Python UV cache
+[Environment]::SetEnvironmentVariable("UV_CACHE_DIR", "D:\packages\uv-cache\", [System.EnvironmentVariableTarget]::User)
+
+# Rust Cargo cache
+[Environment]::SetEnvironmentVariable("CARGO_HOME", "D:\packages\cargo\", [System.EnvironmentVariableTarget]::User)
+
+# Maven local repository
+[Environment]::SetEnvironmentVariable("MAVEN_OPTS", "-Dmaven.repo.local=D:\packages\maven", [System.EnvironmentVariableTarget]::User)
+
+# Gradle (Java)
+[Environment]::SetEnvironmentVariable("GRADLE_USER_HOME", "d:\packages\.gradle", [System.EnvironmentVariableTarget]::User)
+
+# Symbols
+[Environment]::SetEnvironmentVariable("_NT_SYMBOL_PATH", "srv*d:\packages\symbols*https://msdl.microsoft.com/download/symbols", [System.EnvironmentVariableTarget]::User)
+
+# Tell Corepack not to automatically add packageManager to package.json files (https://blog.hyperknot.com/p/corepacks-packagemanager-field)
+[Environment]::SetEnvironmentVariable("COREPACK_ENABLE_AUTO_PIN", "0", [System.EnvironmentVariableTarget]::User)
+
+# Enable Clipboard History
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
+		</File>
+		<File path="C:\Windows\Setup\Scripts\Specialize.ps1">
+$scripts = @(
+	{
+		Remove-Item -LiteralPath 'Registry::HKLM\Software\Microsoft\WindowsUpdate\Orchestrator\UScheduler_Oobe\OutlookUpdate' -Force -ErrorAction 'SilentlyContinue';
+	};
+	{
+		reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications" /v ConfigureChatAutoInstall /t REG_DWORD /d 0 /f;
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\RemovePackages.ps1';
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\RemoveCapabilities.ps1';
+	};
+	{
+		net.exe accounts /maxpwage:UNLIMITED;
+	};
+	{
+		reg.exe add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableCloudOptimizedContent" /t REG_DWORD /d 1 /f;
+		[System.Diagnostics.EventLog]::CreateEventSource( 'UnattendGenerator', 'Application' );
+	};
+	{
+		Register-ScheduledTask -TaskName 'UnlockStartLayout' -Xml $( Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\UnlockStartLayout.xml' -Raw );
+	};
+	{
+		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f
+	};
+	{
+		Remove-Item -LiteralPath 'C:\Users\Public\Desktop\Microsoft Edge.lnk' -ErrorAction 'SilentlyContinue' -Verbose;
+	};
+	{
+		Set-ExecutionPolicy -Scope 'LocalMachine' -ExecutionPolicy 'RemoteSigned' -Force;
+	};
+	{
+		reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f;
+	};
+	{
+		reg.exe add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableWindowsConsumerFeatures" /t REG_DWORD /d 1 /f;
+	};
+	{
+		reg.exe add "HKLM\Software\Policies\Microsoft\Edge" /v HideFirstRunExperience /t REG_DWORD /d 1 /f;
+	};
+	{
+		reg.exe add "HKLM\Software\Policies\Microsoft\Edge\Recommended" /v BackgroundModeEnabled /t REG_DWORD /d 0 /f;
+		reg.exe add "HKLM\Software\Policies\Microsoft\Edge\Recommended" /v StartupBoostEnabled /t REG_DWORD /d 0 /f;
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\SetStartPins.ps1';
+	};
+	{
+		reg.exe add "HKU\.DEFAULT\Control Panel\Accessibility\StickyKeys" /v Flags /t REG_SZ /d 10 /f;
+	};
+);
+
+&amp; {
+  [float] $complete = 0;
+  [float] $increment = 100 / $scripts.Count;
+  foreach( $script in $scripts ) {
+    Write-Progress -Id 0 -Activity 'Running scripts to customize your Windows installation. Do not close this window.' -PercentComplete $complete;
+    '*** Will now execute command &#xAB;{0}&#xBB;.' -f $(
+      $script.ToString().Trim() -replace '\s+', ' ' -replace '^(.{99})(.+)$', '$1&#x2026;';
+    );
+    $start = [datetime]::Now;
+    &amp; $script;
+    '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds;
+    "`r`n" * 3;
+    $complete += $increment;
+  }
+} *&gt;&amp;1 | Out-String -Width 1KB -Stream &gt;&gt; "C:\Windows\Setup\Scripts\Specialize.log";
+		</File>
+		<File path="C:\Windows\Setup\Scripts\UserOnce.ps1">
+$scripts = @(
+	{
+		Get-AppxPackage -Name 'Microsoft.Windows.Ai.Copilot.Provider' | Remove-AppxPackage;
+	};
+	{
+		[System.Diagnostics.EventLog]::WriteEntry( 'UnattendGenerator', "User '$env:USERNAME' has requested to unlock the Start menu layout.", [System.Diagnostics.EventLogEntryType]::Information, 1 );
+	};
+	{
+		Remove-Item -LiteralPath "${env:USERPROFILE}\Desktop\Microsoft Edge.lnk" -ErrorAction 'SilentlyContinue' -Verbose;
+	};
+	{
+		Set-ItemProperty -LiteralPath 'Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Search' -Name 'SearchboxTaskbarMode' -Type 'DWord' -Value 0;
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-08.ps1';
+	};
+	{
+		Get-Process -Name 'explorer' -ErrorAction 'SilentlyContinue' | Where-Object -FilterScript {
+			$_.SessionId -eq ( Get-Process -Id $PID ).SessionId;
+		} | Stop-Process -Force;
+	};
+);
+
+&amp; {
+  [float] $complete = 0;
+  [float] $increment = 100 / $scripts.Count;
+  foreach( $script in $scripts ) {
+    Write-Progress -Id 0 -Activity 'Running scripts to configure this user account. Do not close this window.' -PercentComplete $complete;
+    '*** Will now execute command &#xAB;{0}&#xBB;.' -f $(
+      $script.ToString().Trim() -replace '\s+', ' ' -replace '^(.{99})(.+)$', '$1&#x2026;';
+    );
+    $start = [datetime]::Now;
+    &amp; $script;
+    '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds;
+    "`r`n" * 3;
+    $complete += $increment;
+  }
+} *&gt;&amp;1 | Out-String -Width 1KB -Stream &gt;&gt; "$env:TEMP\UserOnce.log";
+		</File>
+		<File path="C:\Windows\Setup\Scripts\DefaultUser.ps1">
+$scripts = @(
+	{
+		reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\WindowsCopilot" /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f;
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 0 /f;
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v "StartLayoutFile" /t REG_SZ /d "C:\Windows\Setup\Scripts\TaskbarLayoutModification.xml" /f;
+		reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v "LockedStartLayout" /t REG_DWORD /d 1 /f;
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "HideFileExt" /t REG_DWORD /d 0 /f;
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowTaskViewButton /t REG_DWORD /d 0 /f;
+	};
+	{
+		$names = @(
+		  'ContentDeliveryAllowed';
+		  'FeatureManagementEnabled';
+		  'OEMPreInstalledAppsEnabled';
+		  'PreInstalledAppsEnabled';
+		  'PreInstalledAppsEverEnabled';
+		  'SilentInstalledAppsEnabled';
+		  'SoftLandingEnabled';
+		  'SubscribedContentEnabled';
+		  'SubscribedContent-310093Enabled';
+		  'SubscribedContent-338387Enabled';
+		  'SubscribedContent-338388Enabled';
+		  'SubscribedContent-338389Enabled';
+		  'SubscribedContent-338393Enabled';
+		  'SubscribedContent-353694Enabled';
+		  'SubscribedContent-353696Enabled';
+		  'SubscribedContent-353698Enabled';
+		  'SystemPaneSuggestionsEnabled';
+		);
+		
+		foreach( $name in $names ) {
+		  reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v $name /t REG_DWORD /d 0 /f;
+		}
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Software\Policies\Microsoft\Windows\Explorer" /v DisableSearchBoxSuggestions /t REG_DWORD /d 1 /f;
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" /v TaskbarEndTask /t REG_DWORD /d 1 /f;
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Control Panel\Accessibility\StickyKeys" /v Flags /t REG_SZ /d 10 /f;
+	};
+	{
+		reg.exe add "HKU\DefaultUser\Software\Microsoft\Windows\CurrentVersion\RunOnce" /v "UnattendedSetup" /t REG_SZ /d "powershell.exe -WindowStyle \""Normal\"" -ExecutionPolicy \""Unrestricted\"" -NoProfile -File \""C:\Windows\Setup\Scripts\UserOnce.ps1\""" /f;
+	};
+);
+
+&amp; {
+  [float] $complete = 0;
+  [float] $increment = 100 / $scripts.Count;
+  foreach( $script in $scripts ) {
+    Write-Progress -Id 0 -Activity 'Running scripts to modify the default user&#x2019;&#x2019;s registry hive. Do not close this window.' -PercentComplete $complete;
+    '*** Will now execute command &#xAB;{0}&#xBB;.' -f $(
+      $script.ToString().Trim() -replace '\s+', ' ' -replace '^(.{99})(.+)$', '$1&#x2026;';
+    );
+    $start = [datetime]::Now;
+    &amp; $script;
+    '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds;
+    "`r`n" * 3;
+    $complete += $increment;
+  }
+} *&gt;&amp;1 | Out-String -Width 1KB -Stream &gt;&gt; "C:\Windows\Setup\Scripts\DefaultUser.log";
+		</File>
+		<File path="C:\Windows\Setup\Scripts\FirstLogon.ps1">
+$scripts = @(
+	{
+		cmd.exe /c "rmdir C:\Windows.old";
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-01.ps1';
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-02.ps1';
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-03.ps1';
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-04.ps1';
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-05.ps1';
+	};
+	{
+		C:\Windows\Setup\Scripts\unattend-06.cmd;
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-07.ps1';
+	};
+	{
+		Remove-Item -LiteralPath @(
+		  'C:\Windows\Panther\unattend.xml';
+		  'C:\Windows\Panther\unattend-original.xml';
+		  'C:\Windows\Setup\Scripts\Wifi.xml';
+		) -Force -ErrorAction 'SilentlyContinue' -Verbose;
+	};
+);
+
+&amp; {
+  [float] $complete = 0;
+  [float] $increment = 100 / $scripts.Count;
+  foreach( $script in $scripts ) {
+    Write-Progress -Id 0 -Activity 'Running scripts to finalize your Windows installation. Do not close this window.' -PercentComplete $complete;
+    '*** Will now execute command &#xAB;{0}&#xBB;.' -f $(
+      $script.ToString().Trim() -replace '\s+', ' ' -replace '^(.{99})(.+)$', '$1&#x2026;';
+    );
+    $start = [datetime]::Now;
+    &amp; $script;
+    '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds;
+    "`r`n" * 3;
+    $complete += $increment;
+  }
+} *&gt;&amp;1 | Out-String -Width 1KB -Stream &gt;&gt; "C:\Windows\Setup\Scripts\FirstLogon.log";
+		</File>
+	</Extensions>
+</unattend>
