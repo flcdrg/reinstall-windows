@@ -195,7 +195,8 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\VisualStudio\Setup" -Name "Cach
 
 
 # SSMS installer includes azure data studio
-choco install sql-server-management-studio --svc
+# Skip for now due to https://github.com/flcdrg/au-packages/issues/215
+# choco install sql-server-management-studio --svc
 
 # Visual Studio 2022 (Ignore virus scanning as sometimes the catalog file it downloads hasn't been scanned)
 # could add --passive package parameter if you want to see the installer UI for progress
