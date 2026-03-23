@@ -47,12 +47,12 @@ Remove-Item -Recurse -Force "C:\Program Files\Waves\IntelOpenVINO1*"
 # 2. Run with this:
 <#
 $cred=Get-Credential domain\username
-Install-BoxstarterPackage -Credential $cred -PackageName https://gist.githubusercontent.com/flcdrg/87802af4c92527eb8a30/raw/1-boxstarter-bare-v4.ps1
+Install-BoxstarterPackage -Credential $cred -PackageName https://raw.githubusercontent.com/flcdrg/reinstall-windows/refs/heads/main/boxstarter.ps1
 #>
 
 [Net.ServicePointManager]::SecurityProtocol =
-    [Net.ServicePointManager]::SecurityProtocol -bor
-    [Net.SecurityProtocolType]::Tls12
+[Net.ServicePointManager]::SecurityProtocol -bor
+[Net.SecurityProtocolType]::Tls12
 
 # This will install NuGet module if missing
 Get-PackageProvider -Name NuGet -ForceBootstrap
@@ -82,6 +82,9 @@ Write-Host "Installing packages"
 choco feature disable --name=virusCheck
 
 Write-Host "Temp: $($env:temp)"
+
+# Ensure that WinGet is available for use
+Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
 
 choco install firefox  --params "/NoDesktopShortcut"
 choco pin add -n=firefox
@@ -231,7 +234,7 @@ $modulesToInstall | Foreach-Object {
     }
 }
 
-# wsl doesn't set exit code on failure.
+# wsl doesn't set exit code on failure. WSL should be installed via autonattend.xml
 $wslstatus = wsl --status 2>&1
 if ($wslstatus -eq "Default Version: 2" ) {
     wsl --install -d Ubuntu --no-launch

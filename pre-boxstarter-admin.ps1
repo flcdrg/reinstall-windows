@@ -66,31 +66,7 @@ else {
     Write-Warning "BitLocker volume D: was not found"
 }
 
-# Fix file ownership on D: (Takes around 12 minutes)
+# Fix file ownership on D: (Takes around 25 minutes)
 Measure-Command { takeown /F D:\ /R /SKIPSL /D N *> $null }
 
-<#
-Configure Bitlocker using PowerShell, similar to how Windows UI does it
-
-If I use the Windows 11 UI to enable Bitlocker, it prompts me to select one or more locations to backup the recovery key (eg. Azure AD account, Microsoft account, file, print).
-
-Once complete, I can see the following if I run `Get-BitLockerVolume -MountPoint c`
-
-```text
-VolumeType      Mount CapacityGB VolumeStatus           Encryption KeyProtector              AutoUnlock Protection
-                Point                                   Percentage                           Enabled    Status
-----------      ----- ---------- ------------           ---------- ------------              ---------- ----------
-OperatingSystem C:      1,168.93 FullyEncrypted         100        {Tpm, RecoveryPassword}              On
-```
-
-If I enable Bitlocker using a PowerShell cmdlet `Enable-BitLocker -MountPoint c: -EncryptionMethod XtsAes128 -TpmProtector -UsedSpaceOnly`
-
-Then the result is that the KeyProtector is only `Tpm`.
-
-I can see that there is an option to run [`Add-BitLockerKeyProtector`](https://learn.microsoft.com/en-au/powershell/module/bitlocker/add-bitlockerkeyprotector?view=windowsserver2025-ps&WT.mc_id=DOP-MVP-5001655) but if you specify `-RecoveryPasswordProtector` then it asks for a password
-
-#>
-
-
-
-%>
+# Windows 11 should (re)enable Bitlocker on C: automatically

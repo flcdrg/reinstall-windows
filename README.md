@@ -120,15 +120,25 @@ Create a subdirectory for each additional driver from hardware vendor or Microso
 
 From elevated prompt:
 
-Mount ISO - Mount-DiskImage -ImagePath D:\git\reinstall-windows\en-us_windows_11_consumer_editions_version_25h2_updated_march_2026_x64_dvd_a1cf6c36.iso
+Mount ISO - 
+
+```powershell
+Mount-DiskImage -ImagePath D:\git\reinstall-windows\en-us_windows_11_consumer_editions_version_25h2_updated_march_2026_x64_dvd_a1cf6c36.iso
+```
+
 Copy entire contents of ISO to D:\git\reinstall-windows\oldMedia\Ge\client_professional_en-us\
 
 Remove existing install.wim
+
+```powershell
 rm .\oldMedia\Ge\client_professional_en-us\sources\install.wim
+```
 
 Extract just Windows 11 Pro image from ISO to local
 
-Export-WindowsImage -SourceImagePath G:\sources\install.wim -SourceIndex 6 -DestinationImagePath D:\git\reinstall-windows\oldMedia\Ge\client_professional_en-us\sources\install.wim -CompressionType max
+```powershell
+Export-WindowsImage -SourceImagePath G:\sources\install.wim -SourceIndex 6 -DestinationImagePath oldMedia\Ge\client_professional_en-us\sources\install.wim -CompressionType max
+```
 
 Unmount ISO
 
@@ -139,3 +149,14 @@ Suspend Bitlocker
 Reboot machine
 Press F12 to bring up boot menu
 Select USB drive (second volume?)
+
+
+After setup completes, run these scripts in order from an elevated PowerShell prompt:
+
+1. Run [pre-boxstarter-admin.ps1](pre-boxstarter-admin.ps1)
+2. Run [Boxstarter](boxstarter.ps1)
+3. Run [post-boxstarter-admin.ps1](post-boxstarter-admin.ps1)
+
+Run these scripts from a non-elevated PowerShell prompt:
+
+1. Run [post-boxstarter-nonadmin.ps1](post-boxstarter-nonadmin.ps1)
