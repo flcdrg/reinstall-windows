@@ -231,8 +231,10 @@ $modulesToInstall | Foreach-Object {
     }
 }
 
-if ( -not (wsl --status)) {
-    wsl --install -d Ubuntu-24.04 --no-launch
+# wsl doesn't set exit code on failure.
+$wslstatus = wsl --status 2>&1
+if ($wslstatus -eq "Default Version: 2" ) {
+    wsl --install -d Ubuntu --no-launch
 }
 
 # Avoid clash with builtin function

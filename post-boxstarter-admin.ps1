@@ -84,3 +84,10 @@ Register-ScheduledTask -TaskName $taskName -Description $taskDescription -Action
 # Create .zip file that includes all BC*.xml files
 Compress-Archive -Path "BC*.xml" -DestinationPath "BCSettings.bcpkg" -Force
 & "$($env:ProgramFiles)\Beyond Compare 5\BComp.com" .\BCSettings.bcpkg /silent
+
+Write-Host "Enter Bitlocker recovery key to unlock D: drive (or press Enter to skip)"
+$recoveryKey = Read-Host "Recovery Key"
+if ($recoveryKey) {
+    $SecureString = ConvertTo-SecureString $recoveryKey -AsPlainText -Force
+    Unlock-BitLocker -MountPoint "D:" -RecoveryPassword $SecureString
+}

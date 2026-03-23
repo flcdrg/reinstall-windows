@@ -1,4 +1,6 @@
 # This script is embedded in the autounattend.xml as part of the UserOnce script.
+# As such, it must not reference any other files/scripts.
+
 # Things to install/run as the signed-in user, but not elevated
 
 # Install Azure Artifacts credential provider
@@ -11,8 +13,29 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-cred
 # pnpm global store - https://pnpm.io/cli/store
 [Environment]::SetEnvironmentVariable("PNPM_HOME", "D:\packages\pnpm-store\", [System.EnvironmentVariableTarget]::User)
 
-# Add pnpm global store to path (to support global packages)
-./Set-PathVariable.ps1 -NewLocation "D:\packages\pnpm-store\"
+# Add pnpm global store to PATH (to support global packages)
+$newLocation = "D:\packages\pnpm-store\".Trim()
+$regPath = "Environment"
+$hklm = [Microsoft.Win32.Registry]::CurrentUser
+$regKey = $hklm.OpenSubKey($regPath, $false)
+$oldPath = $regKey.GetValue("Path", "", [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+
+# Add only when missing to avoid duplicate path entries.
+$parts = $oldPath -split ";"
+if ($parts -notcontains $newLocation) {
+    $newPath = ($oldPath + ";" + $newLocation) -replace ";;", ""
+
+    if ([string]::IsNullOrEmpty($env:Path)) {
+        $env:Path = $newLocation
+    }
+    else {
+        $env:Path += ";" + $newLocation
+    }
+
+    $writeKey = $hklm.OpenSubKey($regPath, $true)
+    $writeKey.SetValue("Path", $newPath, [Microsoft.Win32.RegistryValueKind]::ExpandString)
+}
+
 
 # NPM cache
 [Environment]::SetEnvironmentVariable("npm_config_cache", "D:\packages\npm-cache\", [System.EnvironmentVariableTarget]::User)
