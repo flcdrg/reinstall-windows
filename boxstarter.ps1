@@ -196,6 +196,12 @@ choco install sql-server-management-studio --svc
 # don't install Microsoft.VisualStudio.Component.Azure.Powershell as that's the old AzureRM PowerShell bits
 # choco install visualstudio2022enterprise --svc --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
 # choco pin add -n="visualstudio2022enterprise"
+
+# set vs cache directory to D:\packages\vs-cache
+# https://learn.microsoft.com/en-us/visualstudio/install/configure-policies-for-enterprise-deployments?view=visualstudio
+New-Item -Path "HKLM:\SOFTWARE\Microsoft\VisualStudio\Setup" -Force | Out-Null
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\VisualStudio\Setup" -Name "CachePath" -Value "D:\VS\cache" -Type String
+
 choco install visualstudio2026enterprise-preview --pre --svc --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
 choco pin add -n="visualstudio2026enterprise-preview"
 
