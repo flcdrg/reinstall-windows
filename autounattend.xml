@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-	<!--https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=en-US&Locale=en-AU&Keyboard=00000409&GeoLocation=12&ProcessorArchitecture=amd64&ComputerNameMode=Custom&ComputerName=Delphinium&CompactOsMode=Default&TimeZoneMode=Explicit&TimeZone=Cen.+Australia+Standard+Time&PartitionMode=Interactive&DiskAssertionMode=Skip&WindowsEditionMode=Generic&WindowsEdition=pro&InstallFromMode=Name&InstallFromName=Windows+11+Pro&PEMode=Default&UserAccountMode=Interactive&PasswordExpirationMode=Unlimited&LockoutMode=Default&HideFiles=Hidden&ShowFileExtensions=true&ShowEndTask=true&TaskbarSearch=Hide&TaskbarIconsMode=Custom&TaskbarIconsXml=%3CLayoutModificationTemplate+xmlns%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FLayoutModification%22+xmlns%3Adefaultlayout%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FFullDefaultLayout%22+xmlns%3Astart%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FStartLayout%22+xmlns%3Ataskbar%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FTaskbarLayout%22+Version%3D%221%22%3E%0D%0A++%3CCustomTaskbarLayoutCollection+PinListPlacement%3D%22Replace%22%3E%0D%0A++++%3Cdefaultlayout%3ATaskbarLayout%3E%0D%0A++++++%3Ctaskbar%3ATaskbarPinList%3E%0D%0A++++++++%3Ctaskbar%3ADesktopApp+DesktopApplicationID%3D%22Microsoft.Windows.Explorer%22+%2F%3E%0D%0A++++++++%3Ctaskbar%3AUWA+AppUserModelID%3D%22Microsoft.WindowsTerminal_8wekyb3d8bbwe%21App%22+%2F%3E++++++++%0D%0A++++++%3C%2Ftaskbar%3ATaskbarPinList%3E%0D%0A++++%3C%2Fdefaultlayout%3ATaskbarLayout%3E%0D%0A++%3C%2FCustomTaskbarLayoutCollection%3E%0D%0A%3C%2FLayoutModificationTemplate%3E&DisableWidgets=true&HideTaskViewButton=true&DisableBingResults=true&StartTilesMode=Default&StartPinsMode=Empty&EnableLongPaths=true&AllowPowerShellScripts=true&DisableAppSuggestions=true&HideEdgeFre=true&DisableEdgeStartupBoost=true&DeleteWindowsOld=true&EffectsMode=Default&DeleteEdgeDesktopIcon=true&DesktopIconsMode=Default&StartFoldersMode=Default&WifiMode=Interactive&ExpressSettings=DisableAll&LockKeysMode=Skip&StickyKeysMode=Disabled&ColorMode=Default&WallpaperMode=Default&LockScreenMode=Default&Remove3DViewer=true&RemoveBingSearch=true&RemoveCopilot=true&RemoveCortana=true&RemoveFamily=true&RemoveGameAssist=true&RemoveGetHelp=true&RemoveHandwriting=true&RemoveMailCalendar=true&RemoveMaps=true&RemoveMathInputPanel=true&RemoveMixedReality=true&RemoveZuneVideo=true&RemoveNews=true&RemoveOffice365=true&RemoveOutlook=true&RemovePaint=true&RemovePaint3D=true&RemovePeople=true&RemovePowerAutomate=true&RemovePowerShellISE=true&RemoveQuickAssist=true&RemoveSkype=true&RemoveSolitaire=true&RemoveSpeech=true&RemoveStickyNotes=true&RemoveTeams=true&RemoveGetStarted=true&RemoveToDo=true&RemoveVoiceRecorder=true&RemoveWallet=true&RemoveWeather=true&RemoveFaxAndScan=true&RemoveWindowsMediaPlayer=true&RemoveZuneMusic=true&RemoveWordPad=true&RemoveXboxApps=true&RemoveYourPhone=true&FirstLogonScript0=Write-Output+%22Install+Chocolatey%22%0D%0ASet-ExecutionPolicy+Bypass+-Scope+Process+-Force%3B+%5BSystem.Net.ServicePointManager%5D%3A%3ASecurityProtocol+%3D+%5BSystem.Net.ServicePointManager%5D%3A%3ASecurityProtocol+-bor+3072%3B+iex+%28%28New-Object+System.Net.WebClient%29.DownloadString%28%27https%3A%2F%2Fcommunity.chocolatey.org%2Finstall.ps1%27%29%29%0D%0A%0D%0AWrite-Host+%22Configure+PowerShellGet%22%0D%0AGet-PackageProvider+-Name+NuGet+-ForceBootstrap%0D%0AInstall-Module+-Name+%22PowerShellGet%22+-AllowClobber+-Force+-Scope+AllUsers%0D%0A&FirstLogonScriptType0=Ps1&FirstLogonScript1=Write-Output+%22Configure+PSResourceGet%22%0D%0ASet-PSRepository+-Name+PSGallery+-InstallationPolicy+Trusted%0D%0AInstall-Module+Microsoft.PowerShell.PSResourceGet+-Repository+PSGallery+-Scope+AllUsers%0D%0ASet-PSResourceRepository+PSGallery+-Trusted&FirstLogonScriptType1=Ps1&FirstLogonScript2=Write-Output+%22Remove+old+Pester%22%0D%0A%24module+%3D+%22C%3A%5CProgram+Files%5CWindowsPowerShell%5CModules%5CPester%22%0D%0Atakeown+%2FF+%24module+%2FA+%2FR%0D%0Aicacls+%24module+%2Freset%0D%0Aicacls+%24module+%2Fgrant+%22*S-1-5-32-544%3AF%22+%2Finheritance%3Ad+%2FT%0D%0ARemove-Item+-Path+%24module+-Recurse+-Force+-Confirm%3A%24false%0D%0A%0D%0AWrite-Output+%22Install+PowerShell+modules%22%0D%0AInstall-Module+-Scope+AllUsers+posh-git%0D%0AInstall-Module+-Scope+AllUsers+Terminal-Icons%0D%0AInstall-module+-scope+allusers+Az%0D%0AInstall-Module+-Scope+AllUsers+-Name+Pester+-Force%0D%0A&FirstLogonScriptType2=Ps1&FirstLogonScript3=Write-Output+%22Install+WSL%22%0D%0Awsl+%2D%2Dinstall&FirstLogonScriptType3=Ps1&FirstLogonScript4=Write-Output+%22Configure+Chocolatey%22%0D%0Achoco+feature+enable+-n%3DallowGlobalConfirmation%0D%0Achoco+feature+enable+-n%3DuseRememberedArgumentsForUpgrades%0D%0Achoco+config+set+%2D%2Dname%3D%22%27defaultPushSource%27%22+%2D%2Dvalue%3D%22%27https%3A%2F%2Fpush.chocolatey.org%2F%27%22&FirstLogonScriptType4=Ps1&FirstLogonScript5=fsutil+devdrv+trust+D%3A&FirstLogonScriptType5=Cmd&FirstLogonScript6=reg.exe+add+%22HKLM%5CSoftware%5CPolicies%5CMicrosoft%5CWindows%5CCloudContent%22+%2Fv+%22DisableCloudOptimizedContent%22+%2Ft+REG_DWORD+%2Fd+1+%2Ff&FirstLogonScriptType6=Ps1&UserOnceScript0=%23+This+script+is+embedded+in+the+autounattend.xml+as+part+of+the+UserOnce+script.%0D%0A%23+Things+to+install%2Frun+as+the+signed-in+user%2C+but+not+elevated%0D%0A%0D%0A%23+Install+Azure+Artifacts+credential+provider%0D%0AInvoke-Expression+%22%26+%7B+%24%28Invoke-RestMethod+https%3A%2F%2Faka.ms%2Finstall-artifacts-credprovider.ps1%29+%7D+-AddNetfx%22%0D%0A%0D%0A%23+Use+DevDrive+for+package+caches+-+https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows%2Fdev-drive%2F%23storing-package-cache-on-dev-drive%0D%0A%23+NuGet+global+package+cache+-+https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fnuget%2Fconsume-packages%2Fmanaging-the-global-packages-and-cache-folders%3FWT.mc_id%3DDOP-MVP-5001655%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22NUGET_PACKAGES%22%2C+%22d%3A%5Cpackages%5Cnuget%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+pnpm+global+store+-+https%3A%2F%2Fpnpm.io%2Fcli%2Fstore%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22PNPM_HOME%22%2C+%22D%3A%5Cpackages%5Cpnpm-store%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Add+pnpm+global+store+to+path+%28to+support+global+packages%29%0D%0A.%2FSet-PathVariable.ps1+-NewLocation+%22D%3A%5Cpackages%5Cpnpm-store%5C%22%0D%0A%0D%0A%23+NPM+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22npm_config_cache%22%2C+%22D%3A%5Cpackages%5Cnpm-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+VCPkg+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22VCPKG_DEFAULT_BINARY_CACHE%22%2C+%22D%3A%5Cpackages%5Cvcpkg-downloads%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Python+PIP+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22PIP_CACHE_DIR%22%2C+%22D%3A%5Cpackages%5Cpip-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Python+UV+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22UV_CACHE_DIR%22%2C+%22D%3A%5Cpackages%5Cuv-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Rust+Cargo+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22CARGO_HOME%22%2C+%22D%3A%5Cpackages%5Ccargo%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Maven+local+repository%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22MAVEN_OPTS%22%2C+%22-Dmaven.repo.local%3DD%3A%5Cpackages%5Cmaven%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Gradle+%28Java%29%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22GRADLE_USER_HOME%22%2C+%22d%3A%5Cpackages%5C.gradle%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Symbols%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22_NT_SYMBOL_PATH%22%2C+%22srv*d%3A%5Cpackages%5Csymbols*https%3A%2F%2Fmsdl.microsoft.com%2Fdownload%2Fsymbols%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Tell+Corepack+not+to+automatically+add+packageManager+to+package.json+files+%28https%3A%2F%2Fblog.hyperknot.com%2Fp%2Fcorepacks-packagemanager-field%29%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22COREPACK_ENABLE_AUTO_PIN%22%2C+%220%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Enable+Clipboard+History%0D%0ASet-ItemProperty+-Path+%22HKCU%3A%5CSoftware%5CMicrosoft%5CClipboard%22+-Name+%22EnableClipboardHistory%22+-Type+DWord+-Value+1+-Force%0D%0A%0D%0A&UserOnceScriptType0=Ps1&WdacMode=Skip&AppLockerMode=Skip-->
+	<!--https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=en-US&Locale=en-AU&Keyboard=00000409&GeoLocation=12&ProcessorArchitecture=amd64&ComputerNameMode=Custom&ComputerName=Delphinium&CompactOsMode=Default&TimeZoneMode=Explicit&TimeZone=Cen.+Australia+Standard+Time&PartitionMode=Custom&DiskpartScript=SELECT+DISK%3D0%0D%0ASELECT+PARTITION%3D1%0D%0AASSIGN+LETTER%3DS%0D%0ASELECT+PARTITION%3D3%0D%0AFORMAT+QUICK+FS%3DNTFS+LABEL%3D%22Windows%22+OVERRIDE%0D%0AASSIGN+LETTER%3DW%0D%0ASELECT+PARTITION%3D4%0D%0AFORMAT+QUICK+FS%3DNTFS+LABEL%3D%22Recovery%22%0D%0AASSIGN+LETTER%3DR%0D%0ASET+ID%3D%22de94bba4-06d1-4d40-a16a-bfd50179d6ac%22%0D%0AGPT+ATTRIBUTES%3D0x8000000000000001&InstallToMode=Available&DiskAssertionMode=Script&DiskAssertionScript=On+Error+Resume+Next%0D%0ASet+wmi+%3D+GetObject%28%22winmgmts%3A%5C%5C.%5Croot%5Ccimv2%22%29%0D%0ASet+drive+%3D+wmi.Get%28%22Win32_DiskDrive.DeviceID%3D%27%5C%5C.%5CPHYSICALDRIVE0%27%22%29%0D%0AIf+Err.Number+%3C%3E+0+Then%0D%0A++++Msgbox+Err.Description%0D%0A++++WScript.Quit+1%0D%0AEnd+If%0D%0AIf+drive.InterfaceType+%3D+%22IDE%22+Or+drive.InterfaceType+%3D+%22SCSI%22+Then%0D%0A++++WScript.Quit+0%0D%0AElse%0D%0A++++MsgBox+%22Assertion+failed.%22%0D%0A++++WScript.Quit+1%0D%0AEnd+If&WindowsEditionMode=Firmware&InstallFromMode=Name&InstallFromName=Windows+11+Pro&PEMode=Default&UserAccountMode=Interactive&PasswordExpirationMode=Unlimited&LockoutMode=Default&HideFiles=Hidden&ShowFileExtensions=true&ShowEndTask=true&TaskbarSearch=Hide&TaskbarIconsMode=Custom&TaskbarIconsXml=%3CLayoutModificationTemplate+xmlns%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FLayoutModification%22+xmlns%3Adefaultlayout%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FFullDefaultLayout%22+xmlns%3Astart%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FStartLayout%22+xmlns%3Ataskbar%3D%22http%3A%2F%2Fschemas.microsoft.com%2FStart%2F2014%2FTaskbarLayout%22+Version%3D%221%22%3E%0D%0A++%3CCustomTaskbarLayoutCollection+PinListPlacement%3D%22Replace%22%3E%0D%0A++++%3Cdefaultlayout%3ATaskbarLayout%3E%0D%0A++++++%3Ctaskbar%3ATaskbarPinList%3E%0D%0A++++++++%3Ctaskbar%3ADesktopApp+DesktopApplicationID%3D%22Microsoft.Windows.Explorer%22+%2F%3E%0D%0A++++++++%3Ctaskbar%3AUWA+AppUserModelID%3D%22Microsoft.WindowsTerminal_8wekyb3d8bbwe%21App%22+%2F%3E++++++++%0D%0A++++++%3C%2Ftaskbar%3ATaskbarPinList%3E%0D%0A++++%3C%2Fdefaultlayout%3ATaskbarLayout%3E%0D%0A++%3C%2FCustomTaskbarLayoutCollection%3E%0D%0A%3C%2FLayoutModificationTemplate%3E&DisableWidgets=true&HideTaskViewButton=true&DisableBingResults=true&StartTilesMode=Default&StartPinsMode=Empty&EnableLongPaths=true&AllowPowerShellScripts=true&DisableAppSuggestions=true&HideEdgeFre=true&DisableEdgeStartupBoost=true&DeleteWindowsOld=true&EffectsMode=Default&DeleteEdgeDesktopIcon=true&DesktopIconsMode=Default&StartFoldersMode=Default&WifiMode=Interactive&ExpressSettings=DisableAll&LockKeysMode=Skip&StickyKeysMode=Disabled&ColorMode=Default&WallpaperMode=Default&LockScreenMode=Default&Remove3DViewer=true&RemoveBingSearch=true&RemoveCopilot=true&RemoveCortana=true&RemoveFamily=true&RemoveGameAssist=true&RemoveGetHelp=true&RemoveHandwriting=true&RemoveMailCalendar=true&RemoveMaps=true&RemoveMathInputPanel=true&RemoveMixedReality=true&RemoveZuneVideo=true&RemoveNews=true&RemoveOffice365=true&RemoveOutlook=true&RemovePaint=true&RemovePaint3D=true&RemovePeople=true&RemovePowerAutomate=true&RemovePowerShellISE=true&RemoveQuickAssist=true&RemoveSkype=true&RemoveSolitaire=true&RemoveSpeech=true&RemoveStickyNotes=true&RemoveTeams=true&RemoveGetStarted=true&RemoveToDo=true&RemoveVoiceRecorder=true&RemoveWallet=true&RemoveWeather=true&RemoveFaxAndScan=true&RemoveWindowsMediaPlayer=true&RemoveZuneMusic=true&RemoveWordPad=true&RemoveXboxApps=true&RemoveYourPhone=true&SystemScript0=%23+Pause+Windows+Updates+for+an+hour%2C+to+make+setup+faster%0D%0A%0D%0A%24format+%3D+%27yyyy-MM-ddTHH%5C%3Amm%5C%3AssK%27%3B%0D%0A%24now+%3D+%5Bdatetime%5D%3A%3AUtcNow%3B%0D%0A%24start+%3D+%24now.ToString%28%24format%29%3B%0D%0A%24end+%3D+%24now.AddHours%281%29.ToString%28%24format%29%3B%0D%0A%24params+%3D+%40%7B%0D%0A++++LiteralPath+%3D+%27Registry%3A%3AHKLM%5CSoftware%5CMicrosoft%5CWindowsUpdate%5CUX%5CSettings%27%3B%0D%0A++++Type+%3D+%27String%27%3B%0D%0A++++Force+%3D+%24true%3B%0D%0A++++Verbose+%3D+%24true%3B%0D%0A%7D%3B%0D%0A%27PauseFeatureUpdatesStartTime%27%2C+%27PauseQualityUpdatesStartTime%27%2C+%27PauseUpdatesStartTime%27+%7C+foreach+%7B%0D%0A++++Set-ItemProperty+%40params+-Name+%24_+-Value+%24start%3B%0D%0A%7D%3B%0D%0A%27PauseFeatureUpdatesEndTime%27%2C+%27PauseQualityUpdatesEndTime%27%2C+%27PauseUpdatesExpiryTime%27+%7C+foreach+%7B%0D%0A++++Set-ItemProperty+%40params+-Name+%24_+-Value+%24end%3B%0D%0A%7D%3B&SystemScriptType0=Ps1&FirstLogonScript0=Write-Output+%22Install+Chocolatey%22%0D%0ASet-ExecutionPolicy+Bypass+-Scope+Process+-Force%3B+%5BSystem.Net.ServicePointManager%5D%3A%3ASecurityProtocol+%3D+%5BSystem.Net.ServicePointManager%5D%3A%3ASecurityProtocol+-bor+3072%3B+iex+%28%28New-Object+System.Net.WebClient%29.DownloadString%28%27https%3A%2F%2Fcommunity.chocolatey.org%2Finstall.ps1%27%29%29%0D%0A%0D%0AWrite-Host+%22Configure+PowerShellGet%22%0D%0AGet-PackageProvider+-Name+NuGet+-ForceBootstrap%0D%0AInstall-Module+-Name+%22PowerShellGet%22+-AllowClobber+-Force+-Scope+AllUsers%0D%0A&FirstLogonScriptType0=Ps1&FirstLogonScript1=Write-Output+%22Configure+PSResourceGet%22%0D%0ASet-PSRepository+-Name+PSGallery+-InstallationPolicy+Trusted%0D%0AInstall-Module+Microsoft.PowerShell.PSResourceGet+-Repository+PSGallery+-Scope+AllUsers%0D%0AGet-PSResourceRepository%0D%0ASet-PSResourceRepository+PSGallery+-Trusted&FirstLogonScriptType1=Ps1&FirstLogonScript2=Write-Output+%22Remove+old+Pester%22%0D%0A%24module+%3D+%22C%3A%5CProgram+Files%5CWindowsPowerShell%5CModules%5CPester%22%0D%0Atakeown+%2FF+%24module+%2FA+%2FR%0D%0Aicacls+%24module+%2Freset%0D%0Aicacls+%24module+%2Fgrant+%22*S-1-5-32-544%3AF%22+%2Finheritance%3Ad+%2FT%0D%0ARemove-Item+-Path+%24module+-Recurse+-Force+-Confirm%3A%24false%0D%0A%0D%0AWrite-Output+%22Install+PowerShell+modules%22%0D%0AInstall-Module+-Scope+AllUsers+posh-git%0D%0AInstall-Module+-Scope+AllUsers+Terminal-Icons%0D%0AInstall-module+-scope+allusers+Az%0D%0AInstall-Module+-Scope+AllUsers+-Name+Pester+-Force%0D%0A&FirstLogonScriptType2=Ps1&FirstLogonScript3=Write-Output+%22Install+WSL%22%0D%0Awsl+%2D%2Dinstall+-d+Ubuntu+%2D%2Dno-launch&FirstLogonScriptType3=Ps1&FirstLogonScript4=Write-Output+%22Configure+Chocolatey%22%0D%0Achoco+feature+enable+-n%3DallowGlobalConfirmation%0D%0Achoco+feature+enable+-n%3DuseRememberedArgumentsForUpgrades%0D%0Achoco+config+set+%2D%2Dname%3D%22%27defaultPushSource%27%22+%2D%2Dvalue%3D%22%27https%3A%2F%2Fpush.chocolatey.org%2F%27%22&FirstLogonScriptType4=Ps1&FirstLogonScript5=fsutil+devdrv+trust+D%3A&FirstLogonScriptType5=Cmd&FirstLogonScript6=reg.exe+add+%22HKLM%5CSoftware%5CPolicies%5CMicrosoft%5CWindows%5CCloudContent%22+%2Fv+%22DisableCloudOptimizedContent%22+%2Ft+REG_DWORD+%2Fd+1+%2Ff&FirstLogonScriptType6=Ps1&FirstLogonScript7=Get-NetConnectionProfile+-InterfaceAlias+%27Ethernet*%27+%7C+Set-NetConnectionProfile+-NetworkCategory+%27Private%27%3B&FirstLogonScriptType7=Ps1&UserOnceScript0=%23+This+script+is+embedded+in+the+autounattend.xml+as+part+of+the+UserOnce+script.%0D%0A%23+As+such%2C+it+must+not+reference+any+other+files%2Fscripts.%0D%0A%0D%0A%23+Things+to+install%2Frun+as+the+signed-in+user%2C+but+not+elevated%0D%0A%0D%0A%23+Install+Azure+Artifacts+credential+provider%0D%0AInvoke-Expression+%22%26+%7B+%24%28Invoke-RestMethod+https%3A%2F%2Faka.ms%2Finstall-artifacts-credprovider.ps1%29+%7D+-AddNetfx%22%0D%0A%0D%0A%23+Use+DevDrive+for+package+caches+-+https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows%2Fdev-drive%2F%23storing-package-cache-on-dev-drive%0D%0A%23+NuGet+global+package+cache+-+https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fnuget%2Fconsume-packages%2Fmanaging-the-global-packages-and-cache-folders%3FWT.mc_id%3DDOP-MVP-5001655%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22NUGET_PACKAGES%22%2C+%22d%3A%5Cpackages%5Cnuget%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+pnpm+global+store+-+https%3A%2F%2Fpnpm.io%2Fcli%2Fstore%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22PNPM_HOME%22%2C+%22D%3A%5Cpackages%5Cpnpm-store%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Add+pnpm+global+store+to+PATH+%28to+support+global+packages%29%0D%0A%24newLocation+%3D+%22D%3A%5Cpackages%5Cpnpm-store%5C%22.Trim%28%29%0D%0A%24regPath+%3D+%22Environment%22%0D%0A%24hklm+%3D+%5BMicrosoft.Win32.Registry%5D%3A%3ACurrentUser%0D%0A%24regKey+%3D+%24hklm.OpenSubKey%28%24regPath%2C+%24false%29%0D%0A%24oldPath+%3D+%24regKey.GetValue%28%22Path%22%2C+%22%22%2C+%5BMicrosoft.Win32.RegistryValueOptions%5D%3A%3ADoNotExpandEnvironmentNames%29%0D%0A%0D%0A%23+Add+only+when+missing+to+avoid+duplicate+path+entries.%0D%0A%24parts+%3D+%24oldPath+-split+%22%3B%22%0D%0Aif+%28%24parts+-notcontains+%24newLocation%29+%7B%0D%0A++++%24newPath+%3D+%28%24oldPath+%2B+%22%3B%22+%2B+%24newLocation%29+-replace+%22%3B%3B%22%2C+%22%22%0D%0A%0D%0A++++if+%28%5Bstring%5D%3A%3AIsNullOrEmpty%28%24env%3APath%29%29+%7B%0D%0A++++++++%24env%3APath+%3D+%24newLocation%0D%0A++++%7D%0D%0A++++else+%7B%0D%0A++++++++%24env%3APath+%2B%3D+%22%3B%22+%2B+%24newLocation%0D%0A++++%7D%0D%0A%0D%0A++++%24writeKey+%3D+%24hklm.OpenSubKey%28%24regPath%2C+%24true%29%0D%0A++++%24writeKey.SetValue%28%22Path%22%2C+%24newPath%2C+%5BMicrosoft.Win32.RegistryValueKind%5D%3A%3AExpandString%29%0D%0A%7D%0D%0A%0D%0A%0D%0A%23+NPM+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22npm_config_cache%22%2C+%22D%3A%5Cpackages%5Cnpm-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+VCPkg+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22VCPKG_DEFAULT_BINARY_CACHE%22%2C+%22D%3A%5Cpackages%5Cvcpkg-downloads%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Python+PIP+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22PIP_CACHE_DIR%22%2C+%22D%3A%5Cpackages%5Cpip-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Python+UV+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22UV_CACHE_DIR%22%2C+%22D%3A%5Cpackages%5Cuv-cache%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Rust+Cargo+cache%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22CARGO_HOME%22%2C+%22D%3A%5Cpackages%5Ccargo%5C%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Maven+local+repository%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22MAVEN_OPTS%22%2C+%22-Dmaven.repo.local%3DD%3A%5Cpackages%5Cmaven%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Gradle+%28Java%29%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22GRADLE_USER_HOME%22%2C+%22d%3A%5Cpackages%5C.gradle%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Symbols%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22_NT_SYMBOL_PATH%22%2C+%22srv*d%3A%5Cpackages%5Csymbols*https%3A%2F%2Fmsdl.microsoft.com%2Fdownload%2Fsymbols%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Tell+Corepack+not+to+automatically+add+packageManager+to+package.json+files+%28https%3A%2F%2Fblog.hyperknot.com%2Fp%2Fcorepacks-packagemanager-field%29%0D%0A%5BEnvironment%5D%3A%3ASetEnvironmentVariable%28%22COREPACK_ENABLE_AUTO_PIN%22%2C+%220%22%2C+%5BSystem.EnvironmentVariableTarget%5D%3A%3AUser%29%0D%0A%0D%0A%23+Enable+Clipboard+History%0D%0ASet-ItemProperty+-Path+%22HKCU%3A%5CSoftware%5CMicrosoft%5CClipboard%22+-Name+%22EnableClipboardHistory%22+-Type+DWord+-Value+1+-Force%0D%0A%0D%0A&UserOnceScriptType0=Ps1&UserOnceScript1=%23+Disable+single+tap+on+touchpad%0D%0A%0D%0A%23+https%3A%2F%2Flearn.microsoft.com%2Fwindows-hardware%2Fdesign%2Fcomponent-guidelines%2Ftouchpad-tuning-guidelines%3FWT.mc_id%3DDOP-MVP-5001655%23dynamically-querying-and-modifying-settings%0D%0A%0D%0A%23require+-Version+5.1%0D%0A%0D%0A%24source+%3D+%40%27%0D%0Ausing+System%3B%0D%0Ausing+System.Collections.Specialized%3B%0D%0Ausing+System.Runtime.InteropServices%3B%0D%0Ausing+System.Runtime.Versioning%3B%0D%0A%0D%0Apublic+static+class+SystemParametersInfoHelper%0D%0A%7B%0D%0A++++%5BDllImport%28%22USER32.dll%22%2C+ExactSpelling+%3D+true%2C+EntryPoint+%3D+%22SystemParametersInfoW%22%2C+SetLastError+%3D+true%29%2C+DefaultDllImportSearchPaths%28DllImportSearchPath.System32%29%5D%0D%0A++++%5BSupportedOSPlatform%28%22windows5.0%22%29%5D%0D%0A++++internal+static+extern+unsafe+bool+SystemParametersInfo%28uint+uiAction%2C+uint+uiParam%2C+%5BOptional%5D+void*+pvParam%2C+uint+fWinIni%29%3B%0D%0A%0D%0A++++public+static+void+DisableSingleTap%28%29%0D%0A++++%7B%0D%0A++++++++const+uint+SPI_GETTOUCHPADPARAMETERS+%3D+0x00AE%3B%0D%0A%0D%0A++++++++%2F%2F++Sets+details+about+the+Precision+Touchpad%2C+including+user+settings+and+system+information+related+to+the+touchpad.%0D%0A++++++++const+uint+SPI_SETTOUCHPADPARAMETERS+%3D+0x00AF%3B%0D%0A%0D%0A++++++++unsafe%0D%0A++++++++%7B%0D%0A++++++++++++%2F%2F+Use+a+fixed+buffer+to+handle+the+managed+type+issue++%0D%0A++++++++++++TOUCHPAD_PARAMETERS+param%3B%0D%0A++++++++++++param.VersionNumber+%3D+1%3B%0D%0A%0D%0A++++++++++++var+size+%3D+%28uint%29Marshal.SizeOf%3CTOUCHPAD_PARAMETERS%3E%28%29%3B%0D%0A++++++++++++var+result+%3D+SystemParametersInfo%28SPI_GETTOUCHPADPARAMETERS%2C+size%2C+%26param%2C+0%29%3B%0D%0A%0D%0A%0D%0A++++++++++++if+%28param.TapEnabled%29%0D%0A++++++++++++%7B%0D%0A++++++++++++++++param.TapEnabled+%3D+false%3B%0D%0A%0D%0A++++++++++++++++result+%3D+SystemParametersInfo%28SPI_SETTOUCHPADPARAMETERS%2C+size%2C+%26param%2C+3%29%3B%0D%0A++++++++++++%7D%0D%0A++++++++%7D%0D%0A++++%7D%0D%0A%7D%0D%0A%0D%0A%2F%2F%2F+%3Csummary%3E%0D%0A%2F%2F%2F+From+%3Cseealso+href%3D%22https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fwindows%2Fwin32%2Fapi%2Fwinuser%2Fns-winuser-touchpad_parameters%3FWT.mc_id%3DDOP-MVP-5001655%22%2F%3E%0D%0A%2F%2F%2F+%3C%2Fsummary%3E%0D%0A%5BStructLayout%28LayoutKind.Sequential%29%5D%0D%0Apublic+struct+TOUCHPAD_PARAMETERS%0D%0A%7B%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+version+of+the+struct.%0D%0A++++%2F%2F%2F+Caller+must+set+to+TOUCHPAD_PARAMETERS_LATEST_VERSION+to+use+the+latest+version%2C+%0D%0A++++%2F%2F%2F+or+to+TOUCHPAD_PARAMETERS_VERSION_%5B%23%5D+to+use+a+specific+version.+%0D%0A++++%2F%2F%2F+The+version+must+be+specified+when+both+reading+and+writing+settings.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+uint+VersionNumber%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+maximum+number+of+simultaneous+contacts+%28for+the+touchpad+that+supports+the+most%29+amongst+all+detected+touchpads.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+uint+MaxSupportedContacts%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+supported+features+reported+by+detected+legacy+touchpads.+%0D%0A++++%2F%2F%2F+This+will+be+LEGACY_TOUCHPAD_FEATURE_NONE+if+no+legacy+touchpads+are+detected%2C+%0D%0A++++%2F%2F%2F+or+if+the+legacy+touchpads+do+not+support+configuration+through+SPI_SETTOUCHPADPARAMETERS.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+LEGACY_TOUCHPAD_FEATURES+LegacyTouchpadFeatures%3B%0D%0A%0D%0A++++private+BitVector32+First%3B%0D%0A++++private+BitVector32+Second%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+touchpad+sensitivity+level.+The+more+sensitive+the+touchpad%2C+the+less+suppression+of+mouse+input+generation+occurs+after+keyboard+activity.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+TOUCHPAD_SENSITIVITY_LEVEL+SensitivityLevel%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+rate+at+which+the+mouse+motion+produced+by+the+touchpad+moves+the+cursor.+Valid+values+are+1-20%2C+inclusive.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+uint+CursorSpeed%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+relative+intensity+of+the+touchpad%27s+haptic+feedback+%28if+supported%29.+Valid+values+are+0-100%2C+inclusive.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+uint+FeedbackIntensity%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+relative+sensitivity+of+the+touchpad%27s+haptic+click+detection+%28if+supported%29.+Valid+values+are+0-100%2C+inclusive.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+uint+ClickForceSensitivity%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+relative+width+of+the+touchpad+right-click+zone.+Valid+values+are+0-100%2C+inclusive.+If+non-zero%2C+this+value+overrides+the+device+configuration.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+uint+RightClickZoneWidth%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+relative+height+of+the+touchpad+right-click+zone.+Valid+values+are+0-100%2C+inclusive.+If+non-zero%2C+this+value+overrides+the+device+configuration.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+uint+RightClickZoneHeight%3B%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+A+Precision+Touchpad+is+detected.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+TouchpadPresent%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+First%5B1%5D%3B%0D%0A++++++++set+%3D%3E+First%5B1%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+A+legacy+touchpad+is+detected.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+LegacyTouchpadPresent%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+First%5B2%5D%3B%0D%0A++++++++set+%3D%3E+First%5B2%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+An+external+mouse+is+detected.%0D%0A++++%2F%2F%2F+See+Precision+touchpad+tuning+for+information+on+exempting+a+mouse+from+being+considered+as+external.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+ExternalMousePresent%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+First%5B4%5D%3B%0D%0A++++++++set+%3D%3E+First%5B4%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Touchpad+input+is+enabled.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+TouchpadEnabled%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+First%5B8%5D%3B%0D%0A++++++++set+%3D%3E+First%5B8%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Touchpad+input+is+active.+It+is+active+if+it+is+enabled%2C+and+either+there+is+no+external+mouse+detected+%0D%0A++++%2F%2F%2F+or+touchpad+input+has+been+configured+to+stay+active+despite+the+presence+of+an+external+mouse.+%0D%0A++++%2F%2F%2F+This+field+does+not+indicate+whether+any+touchpad+is+actively+producing+input.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+TouchpadActive%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+First%5B16%5D%3B%0D%0A++++++++set+%3D%3E+First%5B16%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+A+detected+touchpad+supports+haptic+feedback.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+FeedbackSupported%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+First%5B32%5D%3B%0D%0A++++++++set+%3D%3E+First%5B32%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+A+detected+touchpad+supports+haptic+click+force.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+ClickForceSupported%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+First%5B64%5D%3B%0D%0A++++++++set+%3D%3E+First%5B64%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Touchpad+input+can+remain+active+if+an+external+mouse+is+detected.+%0D%0A++++%2F%2F%2F+When+inactive%2C+any+input+produced+by+a+touchpad+is+ignored.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+AllowActiveWhenMousePresent%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B1%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B1%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Haptic+feedback+is+enabled+on+touchpads+if+supported.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+FeedbackEnabled%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B2%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B2%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Single-finger+taps+are+enabled.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+TapEnabled%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B4%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B4%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Tap-and-drag+is+enabled.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+TapAndDragEnabled%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B8%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B8%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Two-finger+tap+is+enabled.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+TwoFingerTapEnabled%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B16%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B16%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Pressing+the+bottom-right+corner+of+the+touchpad+results+in+a+right-click+instead+of+a+left+click.%0D%0A++++%2F%2F%2F+If+the+user+has+swapped+their+left+and+right+mouse+buttons%2C+the+right-click+zone+is+mirrored+horizontally+to+the+bottom-left+corner+of+the+touchpad.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+RightClickZoneEnabled%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B32%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B32%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Mouse+motion+produced+by+the+touchpad+honors+the+user%27s+mouse+acceleration+setting.%0D%0A++++%2F%2F%2F+If+false%2C+the+mouse+motion+always+has+acceleration+applied.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+MouseAccelSettingHonored%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B64%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B64%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Two-finger+panning+is+enabled.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+PanEnabled%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B128%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B128%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+Two-finger+zooming+is+enabled.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+ZoomEnabled%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B256%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B256%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%0D%0A++++%2F%2F%2F+%3Csummary%3E%0D%0A++++%2F%2F%2F+The+direction+content+scrolls+with+two-finger+panning+is+reversed.%0D%0A++++%2F%2F%2F+%3C%2Fsummary%3E%0D%0A++++public+bool+ScrollDirectionReversed%0D%0A++++%7B%0D%0A++++++++get+%3D%3E+Second%5B512%5D%3B%0D%0A++++++++set+%3D%3E+Second%5B512%5D+%3D+value%3B%0D%0A++++%7D%0D%0A%7D%0D%0A%0D%0A%5BFlags%5D%0D%0Apublic+enum+LEGACY_TOUCHPAD_FEATURES+%3A+uint%0D%0A%7B%0D%0A++++LEGACY_TOUCHPAD_FEATURE_NONE+%3D+0x00000000%2C%0D%0A++++LEGACY_TOUCHPAD_FEATURE_ENABLE_DISABLE+%3D+0x00000001%2C%0D%0A++++LEGACY_TOUCHPAD_FEATURE_REVERSE_SCROLL_DIRECTION+%3D+0x00000004%0D%0A%7D%0D%0A%0D%0Apublic+enum+TOUCHPAD_SENSITIVITY_LEVEL+%3A+uint%0D%0A%7B%0D%0A++++TOUCHPAD_SENSITIVITY_LEVEL_MOST_SENSITIVE+%3D+0x00000000%2C%0D%0A++++TOUCHPAD_SENSITIVITY_LEVEL_HIGH_SENSITIVITY+%3D+0x00000001%2C%0D%0A++++TOUCHPAD_SENSITIVITY_LEVEL_MEDIUM_SENSITIVITY+%3D+0x00000002%2C%0D%0A++++TOUCHPAD_SENSITIVITY_LEVEL_LOW_SENSITIVITY+%3D+0x00000003%2C%0D%0A++++TOUCHPAD_SENSITIVITY_LEVEL_LEAST_SENSITIVE+%3D+0x00000004%0D%0A%7D%0D%0A%27%40%0D%0A%0D%0Aif+%28%24PSVersionTable.PSVersion.Major+-eq+5%29+%7B%0D%0A++++%28%24cp+%3D+New-Object+System.CodeDom.Compiler.CompilerParameters%29.CompilerOptions+%3D+%27%2Funsafe%27%0D%0A%0D%0A++++Add-Type+-CompilerParameters+%24cp+-TypeDefinition+%24source+-Language+CSharp%0D%0A%7D%0D%0Aelseif+%28%24PSVersionTable.PSVersion.Major+-eq+7%29+%7B%0D%0A++++Add-Type+-CompilerOptions+%27%2Funsafe%27+-TypeDefinition+%24source+-Language+CSharp%0D%0A%7D%0D%0A%0D%0A%0D%0A%5BSystemParametersInfoHelper%5D%3A%3ADisableSingleTap%28%29&UserOnceScriptType1=Ps1&WdacMode=Skip&AppLockerMode=Skip-->
 	<settings pass="offlineServicing"></settings>
 	<settings pass="windowsPE">
 		<component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
@@ -15,16 +15,42 @@
 							<Value>Windows 11 Pro</Value>
 						</MetaData>
 					</InstallFrom>
+					<InstallToAvailablePartition>true</InstallToAvailablePartition>
 				</OSImage>
 			</ImageInstall>
 			<UserData>
 				<ProductKey>
-					<Key>VK7JG-NPHTM-C97JM-9MPGT-3V66T</Key>
-					<WillShowUI>OnError</WillShowUI>
+					<WillShowUI>Never</WillShowUI>
 				</ProductKey>
 				<AcceptEula>true</AcceptEula>
 			</UserData>
 			<UseConfigurationSet>false</UseConfigurationSet>
+			<RunSynchronous>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>1</Order>
+					<Path>cmd.exe /c &gt;&gt;X:\assert.vbs (echo:On Error Resume Next&amp;echo:Set wmi = GetObject(^"winmgmts:\\.\root\cimv2^"^)&amp;echo:Set drive = wmi.Get(^"Win32_DiskDrive.DeviceID='\\.\PHYSICALDRIVE0'^"^)&amp;echo:If Err.Number ^&lt;^&gt; 0 Then&amp;echo:Msgbox Err.Description)</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>2</Order>
+					<Path>cmd.exe /c &gt;&gt;X:\assert.vbs (echo:WScript.Quit 1&amp;echo:End If&amp;echo:If drive.InterfaceType = ^"IDE^" Or drive.InterfaceType = ^"SCSI^" Then&amp;echo:WScript.Quit 0&amp;echo:Else&amp;echo:MsgBox ^"Assertion failed.^"&amp;echo:WScript.Quit 1&amp;echo:End If)</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>3</Order>
+					<Path>cscript.exe //E:vbscript "X:\assert.vbs"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>4</Order>
+					<Path>cmd.exe /c &gt;&gt;X:\diskpart.txt (echo:SELECT DISK=0&amp;echo:SELECT PARTITION=1&amp;echo:ASSIGN LETTER=S&amp;echo:SELECT PARTITION=3&amp;echo:FORMAT QUICK FS=NTFS LABEL=^"Windows^" OVERRIDE&amp;echo:ASSIGN LETTER=W&amp;echo:SELECT PARTITION=4)</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>5</Order>
+					<Path>cmd.exe /c &gt;&gt;X:\diskpart.txt (echo:FORMAT QUICK FS=NTFS LABEL=^"Recovery^"&amp;echo:ASSIGN LETTER=R&amp;echo:SET ID=^"de94bba4-06d1-4d40-a16a-bfd50179d6ac^"&amp;echo:GPT ATTRIBUTES=0x8000000000000001)</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>6</Order>
+					<Path>cmd.exe /c "diskpart.exe /s "X:\diskpart.txt" &gt;&gt;"X:\diskpart.log" || ( type "X:\diskpart.log" &amp; echo diskpart encountered an error. &amp; pause &amp; exit /b 1 )"</Path>
+				</RunSynchronousCommand>
+			</RunSynchronous>
 		</component>
 	</settings>
 	<settings pass="generalize"></settings>
@@ -317,6 +343,26 @@ New-Item -Path $key -ItemType 'Directory' -ErrorAction 'SilentlyContinue';
 Set-ItemProperty -LiteralPath $key -Name 'ConfigureStartPins' -Value $json -Type 'String';
 		</File>
 		<File path="C:\Windows\Setup\Scripts\unattend-01.ps1">
+# Pause Windows Updates for an hour, to make setup faster
+
+$format = 'yyyy-MM-ddTHH\:mm\:ssK';
+$now = [datetime]::UtcNow;
+$start = $now.ToString($format);
+$end = $now.AddHours(1).ToString($format);
+$params = @{
+    LiteralPath = 'Registry::HKLM\Software\Microsoft\WindowsUpdate\UX\Settings';
+    Type = 'String';
+    Force = $true;
+    Verbose = $true;
+};
+'PauseFeatureUpdatesStartTime', 'PauseQualityUpdatesStartTime', 'PauseUpdatesStartTime' | foreach {
+    Set-ItemProperty @params -Name $_ -Value $start;
+};
+'PauseFeatureUpdatesEndTime', 'PauseQualityUpdatesEndTime', 'PauseUpdatesExpiryTime' | foreach {
+    Set-ItemProperty @params -Name $_ -Value $end;
+};
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-02.ps1">
 Write-Output "Install Chocolatey"
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
@@ -324,13 +370,14 @@ Write-Host "Configure PowerShellGet"
 Get-PackageProvider -Name NuGet -ForceBootstrap
 Install-Module -Name "PowerShellGet" -AllowClobber -Force -Scope AllUsers
 		</File>
-		<File path="C:\Windows\Setup\Scripts\unattend-02.ps1">
+		<File path="C:\Windows\Setup\Scripts\unattend-03.ps1">
 Write-Output "Configure PSResourceGet"
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Install-Module Microsoft.PowerShell.PSResourceGet -Repository PSGallery -Scope AllUsers
+Get-PSResourceRepository
 Set-PSResourceRepository PSGallery -Trusted
 		</File>
-		<File path="C:\Windows\Setup\Scripts\unattend-03.ps1">
+		<File path="C:\Windows\Setup\Scripts\unattend-04.ps1">
 Write-Output "Remove old Pester"
 $module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
 takeown /F $module /A /R
@@ -344,24 +391,29 @@ Install-Module -Scope AllUsers Terminal-Icons
 Install-module -scope allusers Az
 Install-Module -Scope AllUsers -Name Pester -Force
 		</File>
-		<File path="C:\Windows\Setup\Scripts\unattend-04.ps1">
-Write-Output "Install WSL"
-wsl --install
-		</File>
 		<File path="C:\Windows\Setup\Scripts\unattend-05.ps1">
+Write-Output "Install WSL"
+wsl --install -d Ubuntu --no-launch
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-06.ps1">
 Write-Output "Configure Chocolatey"
 choco feature enable -n=allowGlobalConfirmation
 choco feature enable -n=useRememberedArgumentsForUpgrades
 choco config set --name="'defaultPushSource'" --value="'https://push.chocolatey.org/'"
 		</File>
-		<File path="C:\Windows\Setup\Scripts\unattend-06.cmd">
+		<File path="C:\Windows\Setup\Scripts\unattend-07.cmd">
 fsutil devdrv trust D:
 		</File>
-		<File path="C:\Windows\Setup\Scripts\unattend-07.ps1">
+		<File path="C:\Windows\Setup\Scripts\unattend-08.ps1">
 reg.exe add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableCloudOptimizedContent" /t REG_DWORD /d 1 /f
 		</File>
-		<File path="C:\Windows\Setup\Scripts\unattend-08.ps1">
+		<File path="C:\Windows\Setup\Scripts\unattend-09.ps1">
+Get-NetConnectionProfile -InterfaceAlias 'Ethernet*' | Set-NetConnectionProfile -NetworkCategory 'Private';
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-0a.ps1">
 # This script is embedded in the autounattend.xml as part of the UserOnce script.
+# As such, it must not reference any other files/scripts.
+
 # Things to install/run as the signed-in user, but not elevated
 
 # Install Azure Artifacts credential provider
@@ -374,8 +426,29 @@ Invoke-Expression "&amp; { $(Invoke-RestMethod https://aka.ms/install-artifacts-
 # pnpm global store - https://pnpm.io/cli/store
 [Environment]::SetEnvironmentVariable("PNPM_HOME", "D:\packages\pnpm-store\", [System.EnvironmentVariableTarget]::User)
 
-# Add pnpm global store to path (to support global packages)
-./Set-PathVariable.ps1 -NewLocation "D:\packages\pnpm-store\"
+# Add pnpm global store to PATH (to support global packages)
+$newLocation = "D:\packages\pnpm-store\".Trim()
+$regPath = "Environment"
+$hklm = [Microsoft.Win32.Registry]::CurrentUser
+$regKey = $hklm.OpenSubKey($regPath, $false)
+$oldPath = $regKey.GetValue("Path", "", [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+
+# Add only when missing to avoid duplicate path entries.
+$parts = $oldPath -split ";"
+if ($parts -notcontains $newLocation) {
+    $newPath = ($oldPath + ";" + $newLocation) -replace ";;", ""
+
+    if ([string]::IsNullOrEmpty($env:Path)) {
+        $env:Path = $newLocation
+    }
+    else {
+        $env:Path += ";" + $newLocation
+    }
+
+    $writeKey = $hklm.OpenSubKey($regPath, $true)
+    $writeKey.SetValue("Path", $newPath, [Microsoft.Win32.RegistryValueKind]::ExpandString)
+}
+
 
 # NPM cache
 [Environment]::SetEnvironmentVariable("npm_config_cache", "D:\packages\npm-cache\", [System.EnvironmentVariableTarget]::User)
@@ -406,6 +479,301 @@ Invoke-Expression "&amp; { $(Invoke-RestMethod https://aka.ms/install-artifacts-
 
 # Enable Clipboard History
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
+		</File>
+		<File path="C:\Windows\Setup\Scripts\unattend-0b.ps1">
+# Disable single tap on touchpad
+
+# https://learn.microsoft.com/windows-hardware/design/component-guidelines/touchpad-tuning-guidelines?WT.mc_id=DOP-MVP-5001655#dynamically-querying-and-modifying-settings
+
+#require -Version 5.1
+
+$source = @'
+using System;
+using System.Collections.Specialized;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
+
+public static class SystemParametersInfoHelper
+{
+    [DllImport("USER32.dll", ExactSpelling = true, EntryPoint = "SystemParametersInfoW", SetLastError = true), DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+    [SupportedOSPlatform("windows5.0")]
+    internal static extern unsafe bool SystemParametersInfo(uint uiAction, uint uiParam, [Optional] void* pvParam, uint fWinIni);
+
+    public static void DisableSingleTap()
+    {
+        const uint SPI_GETTOUCHPADPARAMETERS = 0x00AE;
+
+        //  Sets details about the Precision Touchpad, including user settings and system information related to the touchpad.
+        const uint SPI_SETTOUCHPADPARAMETERS = 0x00AF;
+
+        unsafe
+        {
+            // Use a fixed buffer to handle the managed type issue  
+            TOUCHPAD_PARAMETERS param;
+            param.VersionNumber = 1;
+
+            var size = (uint)Marshal.SizeOf&lt;TOUCHPAD_PARAMETERS&gt;();
+            var result = SystemParametersInfo(SPI_GETTOUCHPADPARAMETERS, size, &amp;param, 0);
+
+
+            if (param.TapEnabled)
+            {
+                param.TapEnabled = false;
+
+                result = SystemParametersInfo(SPI_SETTOUCHPADPARAMETERS, size, &amp;param, 3);
+            }
+        }
+    }
+}
+
+/// &lt;summary&gt;
+/// From &lt;seealso href="https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-touchpad_parameters?WT.mc_id=DOP-MVP-5001655"/&gt;
+/// &lt;/summary&gt;
+[StructLayout(LayoutKind.Sequential)]
+public struct TOUCHPAD_PARAMETERS
+{
+    /// &lt;summary&gt;
+    /// The version of the struct.
+    /// Caller must set to TOUCHPAD_PARAMETERS_LATEST_VERSION to use the latest version, 
+    /// or to TOUCHPAD_PARAMETERS_VERSION_[#] to use a specific version. 
+    /// The version must be specified when both reading and writing settings.
+    /// &lt;/summary&gt;
+    public uint VersionNumber;
+
+    /// &lt;summary&gt;
+    /// The maximum number of simultaneous contacts (for the touchpad that supports the most) amongst all detected touchpads.
+    /// &lt;/summary&gt;
+    public uint MaxSupportedContacts;
+
+    /// &lt;summary&gt;
+    /// The supported features reported by detected legacy touchpads. 
+    /// This will be LEGACY_TOUCHPAD_FEATURE_NONE if no legacy touchpads are detected, 
+    /// or if the legacy touchpads do not support configuration through SPI_SETTOUCHPADPARAMETERS.
+    /// &lt;/summary&gt;
+    public LEGACY_TOUCHPAD_FEATURES LegacyTouchpadFeatures;
+
+    private BitVector32 First;
+    private BitVector32 Second;
+
+    /// &lt;summary&gt;
+    /// The touchpad sensitivity level. The more sensitive the touchpad, the less suppression of mouse input generation occurs after keyboard activity.
+    /// &lt;/summary&gt;
+    public TOUCHPAD_SENSITIVITY_LEVEL SensitivityLevel;
+
+    /// &lt;summary&gt;
+    /// The rate at which the mouse motion produced by the touchpad moves the cursor. Valid values are 1-20, inclusive.
+    /// &lt;/summary&gt;
+    public uint CursorSpeed;
+
+    /// &lt;summary&gt;
+    /// The relative intensity of the touchpad's haptic feedback (if supported). Valid values are 0-100, inclusive.
+    /// &lt;/summary&gt;
+    public uint FeedbackIntensity;
+
+    /// &lt;summary&gt;
+    /// The relative sensitivity of the touchpad's haptic click detection (if supported). Valid values are 0-100, inclusive.
+    /// &lt;/summary&gt;
+    public uint ClickForceSensitivity;
+
+    /// &lt;summary&gt;
+    /// The relative width of the touchpad right-click zone. Valid values are 0-100, inclusive. If non-zero, this value overrides the device configuration.
+    /// &lt;/summary&gt;
+    public uint RightClickZoneWidth;
+
+    /// &lt;summary&gt;
+    /// The relative height of the touchpad right-click zone. Valid values are 0-100, inclusive. If non-zero, this value overrides the device configuration.
+    /// &lt;/summary&gt;
+    public uint RightClickZoneHeight;
+
+    /// &lt;summary&gt;
+    /// A Precision Touchpad is detected.
+    /// &lt;/summary&gt;
+    public bool TouchpadPresent
+    {
+        get =&gt; First[1];
+        set =&gt; First[1] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// A legacy touchpad is detected.
+    /// &lt;/summary&gt;
+    public bool LegacyTouchpadPresent
+    {
+        get =&gt; First[2];
+        set =&gt; First[2] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// An external mouse is detected.
+    /// See Precision touchpad tuning for information on exempting a mouse from being considered as external.
+    /// &lt;/summary&gt;
+    public bool ExternalMousePresent
+    {
+        get =&gt; First[4];
+        set =&gt; First[4] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Touchpad input is enabled.
+    /// &lt;/summary&gt;
+    public bool TouchpadEnabled
+    {
+        get =&gt; First[8];
+        set =&gt; First[8] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Touchpad input is active. It is active if it is enabled, and either there is no external mouse detected 
+    /// or touchpad input has been configured to stay active despite the presence of an external mouse. 
+    /// This field does not indicate whether any touchpad is actively producing input.
+    /// &lt;/summary&gt;
+    public bool TouchpadActive
+    {
+        get =&gt; First[16];
+        set =&gt; First[16] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// A detected touchpad supports haptic feedback.
+    /// &lt;/summary&gt;
+    public bool FeedbackSupported
+    {
+        get =&gt; First[32];
+        set =&gt; First[32] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// A detected touchpad supports haptic click force.
+    /// &lt;/summary&gt;
+    public bool ClickForceSupported
+    {
+        get =&gt; First[64];
+        set =&gt; First[64] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Touchpad input can remain active if an external mouse is detected. 
+    /// When inactive, any input produced by a touchpad is ignored.
+    /// &lt;/summary&gt;
+    public bool AllowActiveWhenMousePresent
+    {
+        get =&gt; Second[1];
+        set =&gt; Second[1] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Haptic feedback is enabled on touchpads if supported.
+    /// &lt;/summary&gt;
+    public bool FeedbackEnabled
+    {
+        get =&gt; Second[2];
+        set =&gt; Second[2] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Single-finger taps are enabled.
+    /// &lt;/summary&gt;
+    public bool TapEnabled
+    {
+        get =&gt; Second[4];
+        set =&gt; Second[4] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Tap-and-drag is enabled.
+    /// &lt;/summary&gt;
+    public bool TapAndDragEnabled
+    {
+        get =&gt; Second[8];
+        set =&gt; Second[8] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Two-finger tap is enabled.
+    /// &lt;/summary&gt;
+    public bool TwoFingerTapEnabled
+    {
+        get =&gt; Second[16];
+        set =&gt; Second[16] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Pressing the bottom-right corner of the touchpad results in a right-click instead of a left click.
+    /// If the user has swapped their left and right mouse buttons, the right-click zone is mirrored horizontally to the bottom-left corner of the touchpad.
+    /// &lt;/summary&gt;
+    public bool RightClickZoneEnabled
+    {
+        get =&gt; Second[32];
+        set =&gt; Second[32] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Mouse motion produced by the touchpad honors the user's mouse acceleration setting.
+    /// If false, the mouse motion always has acceleration applied.
+    /// &lt;/summary&gt;
+    public bool MouseAccelSettingHonored
+    {
+        get =&gt; Second[64];
+        set =&gt; Second[64] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Two-finger panning is enabled.
+    /// &lt;/summary&gt;
+    public bool PanEnabled
+    {
+        get =&gt; Second[128];
+        set =&gt; Second[128] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// Two-finger zooming is enabled.
+    /// &lt;/summary&gt;
+    public bool ZoomEnabled
+    {
+        get =&gt; Second[256];
+        set =&gt; Second[256] = value;
+    }
+
+    /// &lt;summary&gt;
+    /// The direction content scrolls with two-finger panning is reversed.
+    /// &lt;/summary&gt;
+    public bool ScrollDirectionReversed
+    {
+        get =&gt; Second[512];
+        set =&gt; Second[512] = value;
+    }
+}
+
+[Flags]
+public enum LEGACY_TOUCHPAD_FEATURES : uint
+{
+    LEGACY_TOUCHPAD_FEATURE_NONE = 0x00000000,
+    LEGACY_TOUCHPAD_FEATURE_ENABLE_DISABLE = 0x00000001,
+    LEGACY_TOUCHPAD_FEATURE_REVERSE_SCROLL_DIRECTION = 0x00000004
+}
+
+public enum TOUCHPAD_SENSITIVITY_LEVEL : uint
+{
+    TOUCHPAD_SENSITIVITY_LEVEL_MOST_SENSITIVE = 0x00000000,
+    TOUCHPAD_SENSITIVITY_LEVEL_HIGH_SENSITIVITY = 0x00000001,
+    TOUCHPAD_SENSITIVITY_LEVEL_MEDIUM_SENSITIVITY = 0x00000002,
+    TOUCHPAD_SENSITIVITY_LEVEL_LOW_SENSITIVITY = 0x00000003,
+    TOUCHPAD_SENSITIVITY_LEVEL_LEAST_SENSITIVE = 0x00000004
+}
+'@
+
+if ($PSVersionTable.PSVersion.Major -eq 5) {
+    ($cp = New-Object System.CodeDom.Compiler.CompilerParameters).CompilerOptions = '/unsafe'
+
+    Add-Type -CompilerParameters $cp -TypeDefinition $source -Language CSharp
+}
+elseif ($PSVersionTable.PSVersion.Major -eq 7) {
+    Add-Type -CompilerOptions '/unsafe' -TypeDefinition $source -Language CSharp
+}
+
+
+[SystemParametersInfoHelper]::DisableSingleTap()
 		</File>
 		<File path="C:\Windows\Setup\Scripts\Specialize.ps1">
 $scripts = @(
@@ -459,6 +827,9 @@ $scripts = @(
 	{
 		reg.exe add "HKU\.DEFAULT\Control Panel\Accessibility\StickyKeys" /v Flags /t REG_SZ /d 10 /f;
 	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-01.ps1';
+	};
 );
 
 &amp; {
@@ -492,7 +863,10 @@ $scripts = @(
 		Set-ItemProperty -LiteralPath 'Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Search' -Name 'SearchboxTaskbarMode' -Type 'DWord' -Value 0;
 	};
 	{
-		&amp; 'C:\Windows\Setup\Scripts\unattend-08.ps1';
+		&amp; 'C:\Windows\Setup\Scripts\unattend-0a.ps1';
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-0b.ps1';
 	};
 	{
 		Get-Process -Name 'explorer' -ErrorAction 'SilentlyContinue' | Where-Object -FilterScript {
@@ -596,9 +970,6 @@ $scripts = @(
 		cmd.exe /c "rmdir C:\Windows.old";
 	};
 	{
-		&amp; 'C:\Windows\Setup\Scripts\unattend-01.ps1';
-	};
-	{
 		&amp; 'C:\Windows\Setup\Scripts\unattend-02.ps1';
 	};
 	{
@@ -611,10 +982,16 @@ $scripts = @(
 		&amp; 'C:\Windows\Setup\Scripts\unattend-05.ps1';
 	};
 	{
-		C:\Windows\Setup\Scripts\unattend-06.cmd;
+		&amp; 'C:\Windows\Setup\Scripts\unattend-06.ps1';
 	};
 	{
-		&amp; 'C:\Windows\Setup\Scripts\unattend-07.ps1';
+		C:\Windows\Setup\Scripts\unattend-07.cmd;
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-08.ps1';
+	};
+	{
+		&amp; 'C:\Windows\Setup\Scripts\unattend-09.ps1';
 	};
 	{
 		Remove-Item -LiteralPath @(

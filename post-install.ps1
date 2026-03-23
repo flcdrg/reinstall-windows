@@ -30,3 +30,6 @@ fsutil devdrv trust D:
 
 # Re-enable Windows Spotlight (https://github.com/cschneegans/unattend-generator/issues/222)
 reg.exe add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableCloudOptimizedContent" /t REG_DWORD /d 1 /f
+
+# Make local ethernet connections private
+Get-NetConnectionProfile -InterfaceAlias 'Ethernet*' | Set-NetConnectionProfile -NetworkCategory 'Private';
