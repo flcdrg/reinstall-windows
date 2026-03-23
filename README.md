@@ -6,6 +6,7 @@ Many of these scripts were originally located in <https://gist.github.com/flcdrg
 
 1. Deactivate any licensed software that is linked to the machine (eg. Red Gate)
 2. Shutdown any VMs
+3. Ensure that Bitlocker recovery keys are all backed up.
 
 ## autounattend.xml
 
@@ -92,12 +93,13 @@ mkdir packages\OtherDrivers
 
 <https://learn.microsoft.com/en-us/windows/deployment/update/media-dynamic-update#windows-11-version-22h2-and-later-dynamic-update-packages>
 
-Go to [Windows Update Catalog](https://catalog.update.microsoft.com/Home.aspx) and search for the following:
+Mostly these can be ignored as now Microsoft are releasing new ISOs each month with all patches.
 
-- `Safe OS Dynamic Update for Windows 11 Version 25H2` (save file(s) to `packages\Other\SafeOSDynamic`)
-- `Setup Dynamic Update for Windows 11 Version 25H2` (save file(s) to `packages\Other\SetupDynamic`). eg. <https://catalog.update.microsoft.com/Search.aspx?q=Setup%20Dynamic%20Update%20for%20Windows%2011>
-- `Cumulative Update for Windows 11 25H2` (save to file(s) to `packages\CU`). eg. <https://catalog.update.microsoft.com/Search.aspx?q=2026-03%20Cumulative%20Update%20for%20Windows%2011%2025H2>
-- `Servicing stack Dynamic Update` (may not be present)
+### Capture drivers
+
+```powershell
+Export-WindowsDriver -Online -Destination D:\git\reinstall-windows\packages\OtherDrivers\
+```
 
 Use the most recent version of each. There isn't always a new release every month.
 

@@ -50,6 +50,10 @@ $cred=Get-Credential domain\username
 Install-BoxstarterPackage -Credential $cred -PackageName https://gist.githubusercontent.com/flcdrg/87802af4c92527eb8a30/raw/1-boxstarter-bare-v4.ps1
 #>
 
+[Net.ServicePointManager]::SecurityProtocol =
+    [Net.ServicePointManager]::SecurityProtocol -bor
+    [Net.SecurityProtocolType]::Tls12
+
 # This will install NuGet module if missing
 Get-PackageProvider -Name NuGet -ForceBootstrap
 
@@ -65,6 +69,9 @@ if (-not (Get-InstalledModule -Name PowerShellGet -ErrorAction SilentlyContinue)
 # Write-Host "Set-PSRepository"
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 Install-Module Microsoft.PowerShell.PSResourceGet -Repository PSGallery -Scope AllUsers
+
+# This should mitigate 'Cannot retrieve the dynamic parameters for the cmdlet. Loading repository store failed' error?
+Get-PSResourceRepository
 Set-PSResourceRepository PSGallery -Trusted
 
 # Some things are now installed/configured via Windows Image autounattend.xml now
