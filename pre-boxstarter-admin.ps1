@@ -70,3 +70,10 @@ else {
 Measure-Command { takeown /F D:\ /R /SKIPSL /D N *> $null }
 
 # Windows 11 should (re)enable Bitlocker on C: automatically
+
+# Remove _Instances folder from VS Cache (it refers to old installations)
+$vsCachePath = "D:\VS\cache"
+$instancesFolder = Join-Path $vsCachePath "_Instances"
+if (Test-Path $instancesFolder) {
+    Remove-Item -Recurse -Force $instancesFolder
+}

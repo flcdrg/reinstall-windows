@@ -28,11 +28,3 @@ $userShellFoldersPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explore
 $shellFoldersPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
 Set-ItemProperty -Path $userShellFoldersPath -Name "{374DE290-123F-4565-9164-39C4925E467B}" -Value "D:\downloads"
 Set-ItemProperty -Path $shellFoldersPath -Name "Downloads" -Value "D:\downloads"
-
-
-if (-not(Get-Command node -ErrorAction Ignore)) {
-    fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
-    
-    fnm install --lts
-    fnm use lts-latest
-}

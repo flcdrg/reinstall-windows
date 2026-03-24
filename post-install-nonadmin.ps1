@@ -14,6 +14,7 @@ Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-cred
 [Environment]::SetEnvironmentVariable("PNPM_HOME", "D:\packages\pnpm-store\", [System.EnvironmentVariableTarget]::User)
 
 # Add pnpm global store to PATH (to support global packages)
+# TODO check this isn't corrupting the PATH?
 $newLocation = "D:\packages\pnpm-store\".Trim()
 $regPath = "Environment"
 $hklm = [Microsoft.Win32.Registry]::CurrentUser
