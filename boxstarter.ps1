@@ -204,12 +204,18 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\VisualStudio\Setup" -Name "Cach
 # choco install visualstudio2022enterprise --svc --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
 # choco pin add -n="visualstudio2022enterprise"
 
-choco install visualstudio2026enterprise-preview --pre --svc --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
-choco pin add -n="visualstudio2026enterprise-preview"
+# because preview versions are frequent, we ignore checksums (slightly risky)
+choco install visualstudio2026enterprise-preview --pre --svc --ignore-checksums --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
+if ($LASTEXITCODE -eq 0) {
+    choco pin add -n="visualstudio2026enterprise-preview"
 
-# After Visual Studio
-choco install dotUltimate --svc  --params "'/NoCpp /NoTeamCityAddin'"
-choco install nuget.commandline
+    # After Visual Studio
+    choco install dotUltimate --svc  --params "'/NoCpp /NoTeamCityAddin'"
+    choco install nuget.commandline
+}
+else {
+    Write-Warning "Visual Studio installation return non-zero exit code: $LASTEXITCODE. Skipping pinning the package. You may want to investigate the issue and pin the package manually if it installed successfully."
+}
 
 # Install after other packages, so integration will work
 choco install beyondcompare
@@ -246,7 +252,11 @@ $modulesToInstall | Foreach-Object {
 # wsl doesn't set exit code on failure. WSL should be installed via autonattend.xml
 $wslstatus = wsl --status 2>&1
 if ($wslstatus -eq "Default Version: 2" ) {
-    wsl --install -d Ubuntu --no-launch
+    $wslList = wsl --list --quiet 2>&1
+    if ($wslList -notmatch "Ubuntu") {
+        Write-Host "Installing WSL Ubuntu"
+        wsl --install -d Ubuntu --no-launch
+    }
 }
 
 # Avoid clash with builtin function
