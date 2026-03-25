@@ -17,7 +17,7 @@ $vhdPath = "C:\Drives\DevDriveBackup.vhd"
 New-VHD -Path $vhdPath -Dynamic -SizeBytes 400000000000 |
 Mount-VHD -Passthru |
     Initialize-Disk -PassThru |     
-    New-Partition -AssignDriveLetter -UseMaximumSize | 
+    New-Partition -DriveLetter 'E' -UseMaximumSize | 
     Format-Volume -FileSystem NTFS -Confirm:$false -Force
 
 Dismount-VHD -Path $vhdPath
@@ -25,7 +25,8 @@ Dismount-VHD -Path $vhdPath
 # Create scheduled task to mount VHD on boot
 $taskName = "Mount DevDrive Backup VHD"
 $taskDescription = "Mount the Dev Drive backup VHD on system startup"
-$action = New-ScheduledTaskAction -Execute "pwsh" -Argument "-c Mount-Vhd -Path $vhdPath"
+$mountVhdCommand = "`$disk = Mount-Vhd -Path '$vhdPath' -Passthru | Get-Disk; `$partition = `$disk | Get-Partition | Select-Object -First 1; if (`$partition.DriveLetter -and `$partition.DriveLetter -ne 'E') { Set-Partition -DriveLetter `$partition.DriveLetter -NewDriveLetter 'E' }; if (-not `$partition.DriveLetter) { Add-PartitionAccessPath -DiskNumber `$partition.DiskNumber -PartitionNumber `$partition.PartitionNumber -AccessPath 'E:\' }"
+$action = New-ScheduledTaskAction -Execute "pwsh" -Argument "-c $mountVhdCommand"
 $trigger = New-ScheduledTaskTrigger -AtStartup
 $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest 
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable
