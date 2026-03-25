@@ -7,6 +7,8 @@
     The new location to add to the path variable.
 #>
 
+. "$PSScriptRoot\Set-PathVariableHelpers.ps1"
+
 [CmdletBinding(SupportsShouldProcess=$true)]
  param(
      [parameter(Mandatory=$true)]
@@ -51,8 +53,7 @@
      }
 
      # Build the new path, make sure we don't have double semicolons
-     $newPath = $oldPath + ";" + $NewLocation
-     $newPath = $newPath -replace ";;",""
+      $newPath = Build-NewPath -OldPath $oldPath -NewLocation $NewLocation
 
      if ($pscmdlet.ShouldProcess("%Path%", "Add $NewLocation")){
 
