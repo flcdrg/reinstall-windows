@@ -1,7 +1,7 @@
 # Create Firefox profile (so we can then set prefs)
-& 'C:\Program Files\Mozilla Firefox\firefox.exe' -CreateProfile david
+& 'C:\Program Files\Mozilla Firefox\firefox.exe' -CreateProfile "default-release"
 
-$firefoxProfile = Get-ChildItem "$env:APPDATA\Mozilla\Firefox\Profiles" | Where-Object { $_.Name -like "*.david" } | Select-Object -First 1
+$firefoxProfile = Get-ChildItem "$env:APPDATA\Mozilla\Firefox\Profiles" | Where-Object { $_.Name -like "*.default-release" } | Select-Object -First 1
 Copy-Item .\prefs.js -Destination "$($firefoxProfile.FullName)\user.js"
 
 # Git configuration
