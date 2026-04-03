@@ -62,6 +62,9 @@ if ($parts -notcontains $newLocation) {
 # Symbols
 [Environment]::SetEnvironmentVariable("_NT_SYMBOL_PATH", "srv*d:\packages\symbols*https://msdl.microsoft.com/download/symbols", [System.EnvironmentVariableTarget]::User)
 
+# Vagrant Home - https://developer.hashicorp.com/vagrant/docs/other/environmental-variables#vagrant_home
+[Environment]::SetEnvironmentVariable("VAGRANT_HOME", "D:\packages\vagrant.d", [System.EnvironmentVariableTarget]::User)
+
 # Tell Corepack not to automatically add packageManager to package.json files (https://blog.hyperknot.com/p/corepacks-packagemanager-field)
 [Environment]::SetEnvironmentVariable("COREPACK_ENABLE_AUTO_PIN", "0", [System.EnvironmentVariableTarget]::User)
 
