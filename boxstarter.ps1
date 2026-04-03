@@ -174,6 +174,7 @@ choco install terraform
 choco install terrascan
 choco install tflint
 choco install thunderbird
+choco pin add -n=thunderbird
 choco install tortoisegit
 
 #choco install vagrant  # Not sure why, but Boxstarter gets in a loop thinking this fails with 3010 (which should be fine)
