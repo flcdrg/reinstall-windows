@@ -71,3 +71,7 @@ if ($parts -notcontains $newLocation) {
 # Enable Clipboard History
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
 
+# PNPM
+pnpm config set store-dir D:\packages\pnpm-store\ --global
+# Reinstall global packages
+pnpm install -g --force
