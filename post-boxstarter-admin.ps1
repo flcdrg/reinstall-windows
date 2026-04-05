@@ -41,7 +41,7 @@ Register-ScheduledTask -TaskName $taskName -Description $taskDescription -Action
 $taskName = "Backup Dev Drive"
 $taskDescription = "Backup the Dev Drive to the backup VHD"
 # /c robocopy d:\ e:\ /mir /xj /xf *.iso /xf backup.log /xd "d:\$RECYCLE.BIN" d:\packages d:\VS d:\symbols > d:\backup.log
-$action = New-ScheduledTaskAction -Execute "cmd" -Argument "/c robocopy d:\ e:\ /mir /xj /xf *.iso /xf backup.log /xf *.wim /xd `"`$RECYCLE.BIN`" d:\packages d:\VS > d:\backup.log"
+$action = New-ScheduledTaskAction -Execute "cmd" -Argument "/c robocopy d:\ e:\ /mir /xj /xf *.iso /xf backup.log /xf *.wim /xd `"`$RECYCLE.BIN`" d:\packages d:\VS d:\git\chocolatey-test-environment\.vagrant d:\git\reinstall-windows\packages d:\git\aspire\artifacts d:\git\PowerToys\src\modules > d:\backup.log"
 $trigger = New-ScheduledTaskTrigger -Weekly -At "4:00PM" -DaysOfWeek Friday
 
 Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue | Unregister-ScheduledTask -Confirm:$false -ErrorAction SilentlyContinue
