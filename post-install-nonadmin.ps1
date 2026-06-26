@@ -94,6 +94,10 @@ function Set-PathVariable {
 # Install Azure Artifacts credential provider
 Invoke-Expression "& { $(Invoke-RestMethod https://aka.ms/install-artifacts-credprovider.ps1) } -AddNetfx"
 
+if (-not (Test-Path "D:\packages")) {
+    New-Item -ItemType Directory -Path "D:\packages" | Out-Null
+}
+
 # Use DevDrive for package caches - https://learn.microsoft.com/en-us/windows/dev-drive/#storing-package-cache-on-dev-drive
 # NuGet global package cache - https://learn.microsoft.com/en-us/nuget/consume-packages/managing-the-global-packages-and-cache-folders?WT.mc_id=DOP-MVP-5001655
 [Environment]::SetEnvironmentVariable("NUGET_PACKAGES", "d:\packages\nuget", [System.EnvironmentVariableTarget]::User)
@@ -109,6 +113,9 @@ Set-PathVariable -NewLocation "D:\packages\pnpm-store"
 
 # VCPkg cache
 [Environment]::SetEnvironmentVariable("VCPKG_DEFAULT_BINARY_CACHE", "D:\packages\vcpkg-downloads\", [System.EnvironmentVariableTarget]::User)
+if (-not (Test-Path "D:\packages\vcpkg-downloads")) {
+    New-Item -ItemType Directory -Path "D:\packages\vcpkg-downloads" | Out-Null
+}
 
 # Python PIP cache
 [Environment]::SetEnvironmentVariable("PIP_CACHE_DIR", "D:\packages\pip-cache\", [System.EnvironmentVariableTarget]::User)
@@ -145,6 +152,9 @@ Set-PathVariable -NewLocation "%ANDROID_HOME%\emulator"
 
 # Enable Clipboard History
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1 -Force
+
+# Claude Code on Windows - https://code.claude.com/docs/en/changelog#2-1-111
+[Environment]::SetEnvironmentVariable("CLAUDE_CODE_USE_POWERSHELL_TOOL", "1", [System.EnvironmentVariableTarget]::User)
 
 # PNPM
 pnpm config set store-dir D:\packages\pnpm-store\ --global
