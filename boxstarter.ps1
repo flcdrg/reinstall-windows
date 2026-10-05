@@ -103,7 +103,7 @@ choco install cascadia-code-nerd-font
 if ((get-wmiobject Win32_ComputerSystem).manufacturer -like "*Dell*") {
     choco install dellcommandupdate-uwp
 }
-choco install dotnet-6.0-sdk
+
 choco install dotnet-8.0-sdk
 choco install dotnet-10.0-sdk
 
@@ -140,21 +140,19 @@ choco install nerd-fonts-FiraCode
 # For some reason winget may not be in the path yet
 & "$env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\winget.exe" install "NuGet Package Explorer" --silent --accept-source-agreements --accept-package-agreements --disable-interactivity
 
-choco install office365business  --params='/exclude:"Access Groove Lync OneDrive Outlook Publisher"'
-choco pin add -n=office365business
-
-choco install paint.net
-choco pin add -n="paint.net"
-
 choco install obs-studio
+choco install oscar-cpap-analysis
 
 # https://learn.microsoft.com/en-gb/microsoft-365-apps/deploy/office-deployment-tool-configuration-options#id-attribute-part-of-excludeapp-element
 choco install office365business --params "'/exclude:Access Bing Groove Lync OneDrive OneNote Outlook Publisher Teams '"
+choco pin add -n=office365business
+
 choco install oh-my-posh
 choco install PDFXchangeEditor  --params '"/NoDesktopShortcuts /NoUpdater"'
 # choco install python2  # Required by some NPM/Node packages (eg node-sass)
 choco install powertoys # included mousewithout borders and zoomit
-choco install oscar-cpap-analysis
+choco install paint.net
+choco pin add -n="paint.net"
 
 choco install pingplotter
 choco install pnpm
@@ -171,7 +169,6 @@ choco install streamdeck
 # choco install synology-activebackup-for-business-agent
 
 choco install terraform
-choco install terrascan
 choco install tflint
 choco install thunderbird
 choco pin add -n=thunderbird
@@ -194,10 +191,9 @@ choco pin add -n="zoom"
 New-Item -Path "HKLM:\SOFTWARE\Microsoft\VisualStudio\Setup" -Force | Out-Null
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\VisualStudio\Setup" -Name "CachePath" -Value "D:\VS\cache" -Type String
 
-
-# SSMS installer includes azure data studio
+# SSMS installer
 # Skip for now due to https://github.com/flcdrg/au-packages/issues/215
-# choco install sql-server-management-studio --svc
+choco install sql-server-management-studio --svc
 
 # Visual Studio 2022 (Ignore virus scanning as sometimes the catalog file it downloads hasn't been scanned)
 # could add --passive package parameter if you want to see the installer UI for progress
@@ -206,17 +202,17 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\VisualStudio\Setup" -Name "Cach
 # choco pin add -n="visualstudio2022enterprise"
 
 # because preview versions are frequent, we ignore checksums (slightly risky)
-choco install visualstudio2026enterprise-preview --pre --svc --ignore-checksums --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
-if ($LASTEXITCODE -eq 0) {
-    choco pin add -n="visualstudio2026enterprise-preview"
-
-    # After Visual Studio
-    choco install dotUltimate --svc  --params "'/NoCpp /NoTeamCityAddin'"
-    choco install nuget.commandline
-}
-else {
-    Write-Warning "Visual Studio installation return non-zero exit code: $LASTEXITCODE. Skipping pinning the package. You may want to investigate the issue and pin the package manually if it installed successfully."
-}
+#choco install visualstudio2026enterprise-preview --pre --svc --ignore-checksums --package-parameters "'--add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.NetWeb --add Microsoft.VisualStudio.Workload.VisualStudioExtension --includeRecommended --remove Microsoft.VisualStudio.Component.Azure.Powershell'"
+#if ($LASTEXITCODE -eq 0) {
+#    choco pin add -n="visualstudio2026enterprise-preview"
+#
+#    # After Visual Studio
+#    choco install dotUltimate --svc  --params "'/NoCpp /NoTeamCityAddin'"
+#    choco install nuget.commandline
+#}
+#else {
+#    Write-Warning "Visual Studio installation return non-zero exit code: $LASTEXITCODE. Skipping pinning the package. You may want to investigate the issue and pin the package manually if it installed successfully."
+#}
 
 # Install after other packages, so integration will work
 choco install beyondcompare
@@ -229,36 +225,6 @@ Set-WindowsExplorerOptions -EnableShowFileExtensions -EnableExpandToOpenFolder
 
 # Don't install any Azure CLI extension in Boxstarter, as they will be installed with admin permissions in the user's profile (and then fail to work as a regular user)
 # az extension add --name azure-devops
-
-# Remove pre-installed Pester Module
-if (Test-Path "C:\Program Files\WindowsPowerShell\Modules\Pester\3.4.0" ) {
-    $module = "C:\Program Files\WindowsPowerShell\Modules\Pester"
-    takeown /F $module /A /R
-    icacls $module /reset
-    icacls $module /grant "*S-1-5-32-544:F" /inheritance:d /T
-    Remove-Item -Path $module -Recurse -Force -Confirm:$false
-}
-
-$psmodules = @(Get-PSResource -Scope AllUsers | Select-Object -ExpandProperty Name)
-
-$modulesToInstall = "Terminal-Icons", "posh-git", "PolicyFileEditor", "Pester"
-
-$modulesToInstall | Foreach-Object {
-    if ($psmodules -notcontains $_) {
-        Write-Host "Installing $_"
-        Install-PSResource -Name $_ -Scope AllUsers
-    }
-}
-
-# wsl doesn't set exit code on failure. WSL should be installed via autonattend.xml
-$wslstatus = wsl --status 2>&1
-if ($wslstatus -eq "Default Version: 2" ) {
-    $wslList = wsl --list --quiet 2>&1
-    if ($wslList -notmatch "Ubuntu") {
-        Write-Host "Installing WSL Ubuntu"
-        wsl --install -d Ubuntu --no-launch
-    }
-}
 
 # Avoid clash with builtin function
 Boxstarter.WinConfig\Install-WindowsUpdate -getUpdatesFromMS -acceptEula
